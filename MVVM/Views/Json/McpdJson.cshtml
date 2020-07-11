@@ -1,0 +1,52 @@
+﻿@model McpdViewModel
+
+@{
+    ViewData["Title"] = "MCPD Json Generation Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="container">MCPD Json</h1>
+<form asp-action="MCPDJson">
+    <table class="container table">
+        <tr>
+            <td>
+                <label>@Html.DisplayNameFor(model => model.mcpdHeader.ReportingPeriod):</label>
+                @Model.mcpdHeader.ReportingPeriod.Substring(0, 6)
+            </td>
+            <td>
+                <label>@Html.DisplayNameFor(model => model.mcpdHeader.PlanParent):</label>
+                @Model.mcpdHeader.PlanParent
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>@Html.DisplayNameFor(model => model.mcpdHeader.SubmissionDate):</label>
+                @Model.mcpdHeader.SubmissionDate
+            </td>
+            <td>
+                <label>@Html.DisplayNameFor(model => model.mcpdHeader.SchemaVersion):</label>
+                @Model.mcpdHeader.SchemaVersion
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <label>Json Export Path:</label>
+                <input asp-for="JsonExportPath" size="30" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <label>Json file Mode:</label>
+                <select asp-for="SelectedJsonFileMode" asp-items="@Model.JsonFileMode"></select>
+                <input type="submit" value="Generate Json Go..." class="btn btn-primary" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                @Model.mcpdJsonMessage
+            </td>
+        </tr>
+    </table>
+</form>
+
+

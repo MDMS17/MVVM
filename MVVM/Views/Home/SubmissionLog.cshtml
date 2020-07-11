@@ -1,0 +1,174 @@
+﻿@model mcpdandpcpa.Models.DashboardViewModel
+@{
+    ViewData["Title"] = "SubmissionLog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="container">Submission Log</h1>
+
+<table id="collapsable" class="table">
+    <thead>
+        <tr class="parentYear">
+            <th>
+                Year
+            </th>
+            <th>
+                Month
+            </th>
+            <th>
+                UpdateBy
+            </th>
+            <th>
+                UpdateTime
+            </th>
+            <th>
+                FileName
+            </th>
+            <th>
+                FileType
+            </th>
+            <th>
+                SubmitterName
+            </th>
+            <th>
+                SubmissionDate
+            </th>
+            <th>
+                ValidationStatus
+            </th>
+            <th>
+                TotalPCPASubmitted
+            </th>
+            <th>
+                TotalPCPAAccepted
+            </th>
+            <th>
+                TotalPCPARejected
+            </th>
+            <th>
+                TotalGrievanceSubmitted
+            </th>
+            <th>
+                TotalGrievanceAccepted
+            </th>
+            <th>
+                TotalGrievanceRejected
+            </th>
+            <th>
+                TotalAppealSubmitted
+            </th>
+            <th>
+                TotalAppealAccepted
+            </th>
+            <th>
+                TotalAppealRejected
+            </th>
+            <th>
+                TotalCOCSubmitted
+            </th>
+            <th>
+                TotalCOCAccepted
+            </th>
+            <th>
+                TotalCOCRejected
+            </th>
+            <th>
+                TotalOONSubmitted
+            </th>
+            <th>
+                TotalOONAccepted
+            </th>
+            <th>
+                TotalOONRejected
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.SubmissionLogs)
+        {
+            <tr class="@item.trClass">
+                <td>
+                    @if (item.trClass == "parentYear")
+                    {
+                        <button class="signButton" id="@item.RecordYear">+</button>
+                    }
+                    @Html.DisplayFor(modelItem => item.RecordYear)
+                </td>
+                <td>
+                    @if (item.trClass.StartsWith("parent"))
+                    {
+                        <button class="signButton" id="@item.RecordYear@item.RecordMonth">+</button>
+                    }
+                    @Html.DisplayFor(modelItem => item.RecordMonth)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdateBy)
+                </td>
+                <td>
+                    @item.UpdateDate?.ToString("MMdd HHss")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubmitterName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubmissionDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValidationStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalPCPASubmitted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalPCPAAccepted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalPCPARejected)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalGrievanceSubmitted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalGrievanceAccepted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalGrievanceRejected)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalAppealSubmitted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalAppealAccepted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalAppealRejected)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalCOCSubmitted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalCOCAccepted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalCOCRejected)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalOONSubmitted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalOONAccepted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalOONRejected)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

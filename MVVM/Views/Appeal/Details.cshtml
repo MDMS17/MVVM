@@ -1,0 +1,122 @@
+﻿@model mcpdipData.McpdAppeal
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>McpdAppeal</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.McpdHeaderId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.McpdHeaderId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PlanCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PlanCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cin)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cin)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppealId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppealId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RecordType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RecordType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ParentGrievanceId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ParentGrievanceId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ParentAppealId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ParentAppealId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppealReceivedDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppealReceivedDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NoticeOfActionDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NoticeOfActionDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppealType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppealType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BenefitType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BenefitType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppealResolutionStatusIndicator)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppealResolutionStatusIndicator)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppealResolutionDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppealResolutionDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PartiallyOverturnIndicator)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PartiallyOverturnIndicator)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ExpeditedIndicator)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExpeditedIndicator)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TradingPartnerCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TradingPartnerCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DataSource)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DataSource)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.McpdAppealId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+

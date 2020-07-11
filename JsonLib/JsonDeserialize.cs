@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using mcpdipData;
+using Newtonsoft.Json;
+
+namespace JsonLib
+{
+    public static class JsonDeserialize
+    {
+        public static TestJsonGrievance DeserializeGrievances(string jsonString)
+        {
+            return JsonConvert.DeserializeObject<TestJsonGrievance>(jsonString);
+        }
+        public static List<TestJsonGrievance> DeserializeListOfGrievances(string jsonString)
+        {
+            return JsonConvert.DeserializeObject<List<TestJsonGrievance>>(jsonString);
+        }
+        public static TestJsonAppeal DeserializeAppeals(string jsonString)
+        {
+            return JsonConvert.DeserializeObject<TestJsonAppeal>(jsonString);
+        }
+        public static List<TestJsonAppeal> DeserializeListOfAppeals(string jsonString)
+        {
+            return JsonConvert.DeserializeObject<List<TestJsonAppeal>>(jsonString);
+        }
+        public static TestJsonPcpa DeserializePcpa(string jsonString)
+        {
+            return JsonConvert.DeserializeObject<TestJsonPcpa>(jsonString);
+        }
+        public static List<TestJsonPcpa> DeserializeListOfPcpa(string jsonString)
+        {
+            return JsonConvert.DeserializeObject<List<TestJsonPcpa>>(jsonString);
+        }
+        public static ResponseFile DeserializeReponseFile(ref string responseFileString)
+        {
+            return JsonConvert.DeserializeObject<ResponseFile>(responseFileString);
+        }
+    }
+}

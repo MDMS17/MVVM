@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PCPA File",
+  "description": "Primary Care Physician Assignment file",
+  "type": "object",
+  "properties": {
+    "header": {
+      "description": "The file header",
+      "type": "object",
+      "properties": {
+        "planParent": {
+          "description": "The name of the managed care plan parent",
+          "type": "string",
+          "maxLength": 30
+        },
+        "submissionDate": {
+          "description": "Date the data was submitted to DHCS",
+          "type": "string",
+          "pattern": "^[0-9]{8}$"
+        },
+        "reportingPeriod": {
+          "description": "The last calendar day of the month being reported (the data should represent PCP assignments as of this day)",
+          "type": "string",
+          "pattern": "^[0-9]{8}$"
+        },
+        "submissionType": {
+          "description": "If this file is the first submission for this reporting period, it is Original. If this is to replace a previously submitted file, it is a Resubmission",
+          "type": "string",
+          "enum": [
+            "Original",
+            "Resubmission"
+          ]
+        },
+        "submissionVersion": {
+          "description": "First submission for a reporting period must be '001'. Any future submissions for the same reporting period (Resubmissions), must increment this by 1 for each additional submission",
+          "type": "string",
+          "maxLength": 3
+        },
+        "schemaVersion": {
+          "type": "string",
+          "description": "The version of the schema to which the submitted file adheres",
+          "enum": [
+            "1.0"
+          ]
+        }
+      },
+      "required": [
+        "planParent",
+        "submissionDate",
+        "reportingPeriod",
+        "submissionType",
+        "submissionVersion"
+      ],
+      "additionalProperties": false
+    },
+    "pcpa": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "planCode": {
+            "description": "The plan code for each county which plan operates in. Do not report subcontracting health plans separately",
+            "type": "string",
+            "maxLength": 3
+          },
+          "cin": {
+            "description": "The member's CIN number – a nine-digit number that consists of eight numbers and one letter. CINs must lead with a 9 and end with an alpha character",
+            "type": "string",
+            "pattern": "^[0-9]{8}[A-Z]$"
+          },
+          "npi": {
+            "description": "The ten-digit NPI of the assigned primary care provider as of the last day of the reporting period",
+            "type": "string",
+            "pattern": "^[0-9]{10}$"
+          }
+        },
+        "required": [
+          "planCode",
+          "cin",
+          "npi"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

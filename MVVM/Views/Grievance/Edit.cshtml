@@ -1,0 +1,85 @@
+﻿@model mcpdipData.McpdGrievance
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h1>Edit</h1>
+
+    <h4>McpdAppeal</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="McpdGrievanceId" />
+                <div class="form-group">
+                    <label class="control-label">IPA</label>
+                    <input asp-for="TradingPartnerCode" class="form-control" />
+                    <span asp-validation-for="TradingPartnerCode" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">PlanCode</label>
+                    <input asp-for="PlanCode" class="form-control" />
+                    <span asp-validation-for="PlanCode" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">CIN</label>
+                    <input asp-for="Cin" class="form-control" />
+                    <span asp-validation-for="Cin" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">GrievanceId</label>
+                    <input asp-for="GrievanceId" class="form-control" />
+                    <span asp-validation-for="GrievanceId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">RecordType</label>
+                    <input asp-for="RecordType" class="form-control" />
+                    <span asp-validation-for="RecordType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">ParentGrievanceId</label>
+                    <input asp-for="ParentGrievanceId" class="form-control" />
+                    <span asp-validation-for="ParentGrievanceId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">GrievanceReceivedDate</label>
+                    <input asp-for="GrievanceReceivedDate" class="form-control" />
+                    <span asp-validation-for="GrievanceReceivedDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">GrievanceType</label>
+                    <input asp-for="GrievanceType" class="form-control" />
+                    <span asp-validation-for="GrievanceType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">BenefitType</label>
+                    <input asp-for="BenefitType" class="form-control" />
+                    <span asp-validation-for="BenefitType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">ExemptIndicator</label>
+                    <input asp-for="ExemptIndicator" class="form-control" />
+                    <span asp-validation-for="ExemptIndicator" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">DataSource</label>
+                    <input asp-for="DataSource" class="form-control" />
+                    <span asp-validation-for="DataSource" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+</div>
+

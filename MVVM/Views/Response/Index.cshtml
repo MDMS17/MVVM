@@ -1,0 +1,91 @@
+﻿@model IEnumerable<mcpdipData.McpdipHeader>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FileName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubmitterName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubmissionDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValidationStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Levels)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResponseHierarchy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SchemaVersion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RecordYear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RecordMonth)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubmitterName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubmissionDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValidationStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Levels)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ResponseHierarchy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SchemaVersion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecordYear)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecordMonth)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.HeaderId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.HeaderId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.HeaderId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

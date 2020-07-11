@@ -1,0 +1,60 @@
+﻿@model mcpdandpcpa.Models.JsonFileViewModel
+@{
+    ViewData["Title"] = "PcpaFileValidation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h1>Pcpa File Validation</h1>
+    <form asp-action="PcpaFileValidation">
+        <p>
+            <label>File Type:</label>
+            <select asp-for="SelectedFileType" asp-items="@Model.JsonFileType"></select>
+        </p>
+        <p>
+            <label>File Path:</label>
+            <input asp-for="FilePath" type="text" readonly="readonly" size="60" />
+            <input type="submit" value="Change" asp-action="PcpaBrowseFile" class="btn btn-primary" />
+        </p>
+        <p>
+            <input type="checkbox" onchange="SelectAllToggle(this);" />
+            <label>Select All</label>
+        </p>
+        <table style="width:100%;border:1px solid">
+            @foreach (var item in Model.SelectedFiles)
+            {
+                <tr>
+                    <td><input type="checkbox" asp-for="@item.Item1" class="FileTableItem" /></td>
+                    <td>@Html.DisplayFor(ModelItem => item.Item2)</td>
+                    @if (item.Item3 == "Passed")
+                    {
+                        <td style="background-color:green;">&nbsp;&nbsp;Passed&nbsp;&nbsp;</td>
+                        <td></td>
+                        <td></td>
+                    }
+                    else if (item.Item3 == "Failed")
+                    {
+                        <td style="background-color:red;">&nbsp;&nbsp;Failed&nbsp;&nbsp;</td>
+                        <td><a href="#" onclick="$('#labelId').html($('#@item.Item4').val().replace('~','<br/>'))">Error Message</a></td>
+                        <td><input type="hidden" id="@item.Item4" value="@item.Item5" /></td>
+                    }
+                    else
+                    {
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    }
+                </tr>
+            }
+        </table>
+        <p>
+            <input type="submit" value="Validate Json File" class="btn btn-primary" onclick="return FileTableSelectedItems_Changed();" />
+        </p>
+        <input type="hidden" id="SelectedItemsClient" asp-for="SelectedItems" />
+        <label id="labelId">
+        </label>
+    </form>
+
+</div>
+
+

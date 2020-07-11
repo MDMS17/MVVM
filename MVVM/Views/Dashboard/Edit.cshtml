@@ -1,0 +1,133 @@
+﻿@model mcpdipData.ProcessLog
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>ProcessLog</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="LogId" />
+            <div class="form-group">
+                <label asp-for="TradingPartnerCode" class="control-label"></label>
+                <input asp-for="TradingPartnerCode" class="form-control" />
+                <span asp-validation-for="TradingPartnerCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecordYear" class="control-label"></label>
+                <input asp-for="RecordYear" class="form-control" />
+                <span asp-validation-for="RecordYear" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecordMonth" class="control-label"></label>
+                <input asp-for="RecordMonth" class="form-control" />
+                <span asp-validation-for="RecordMonth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GrievanceTotal" class="control-label"></label>
+                <input asp-for="GrievanceTotal" class="form-control" />
+                <span asp-validation-for="GrievanceTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GrievanceSubmits" class="control-label"></label>
+                <input asp-for="GrievanceSubmits" class="form-control" />
+                <span asp-validation-for="GrievanceSubmits" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GrievanceErrors" class="control-label"></label>
+                <input asp-for="GrievanceErrors" class="form-control" />
+                <span asp-validation-for="GrievanceErrors" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppealTotal" class="control-label"></label>
+                <input asp-for="AppealTotal" class="form-control" />
+                <span asp-validation-for="AppealTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppealSubmits" class="control-label"></label>
+                <input asp-for="AppealSubmits" class="form-control" />
+                <span asp-validation-for="AppealSubmits" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppealErrors" class="control-label"></label>
+                <input asp-for="AppealErrors" class="form-control" />
+                <span asp-validation-for="AppealErrors" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="COCTotal" class="control-label"></label>
+                <input asp-for="COCTotal" class="form-control" />
+                <span asp-validation-for="COCTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="COCSubmits" class="control-label"></label>
+                <input asp-for="COCSubmits" class="form-control" />
+                <span asp-validation-for="COCSubmits" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="COCErrors" class="control-label"></label>
+                <input asp-for="COCErrors" class="form-control" />
+                <span asp-validation-for="COCErrors" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OONTotal" class="control-label"></label>
+                <input asp-for="OONTotal" class="form-control" />
+                <span asp-validation-for="OONTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OONSubmits" class="control-label"></label>
+                <input asp-for="OONSubmits" class="form-control" />
+                <span asp-validation-for="OONSubmits" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OONErrors" class="control-label"></label>
+                <input asp-for="OONErrors" class="form-control" />
+                <span asp-validation-for="OONErrors" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PCPATotal" class="control-label"></label>
+                <input asp-for="PCPATotal" class="form-control" />
+                <span asp-validation-for="PCPATotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PCPASubmits" class="control-label"></label>
+                <input asp-for="PCPASubmits" class="form-control" />
+                <span asp-validation-for="PCPASubmits" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PCPAErrors" class="control-label"></label>
+                <input asp-for="PCPAErrors" class="form-control" />
+                <span asp-validation-for="PCPAErrors" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RunStatus" class="control-label"></label>
+                <input asp-for="RunStatus" class="form-control" />
+                <span asp-validation-for="RunStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RunTime" class="control-label"></label>
+                <input asp-for="RunTime" class="form-control" />
+                <span asp-validation-for="RunTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RunBy" class="control-label"></label>
+                <input asp-for="RunBy" class="form-control" />
+                <span asp-validation-for="RunBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+

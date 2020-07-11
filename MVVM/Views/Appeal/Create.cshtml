@@ -1,0 +1,100 @@
+﻿@model mcpdipData.McpdAppeal
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>McpdAppeal</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="McpdHeaderId" class="control-label"></label>
+                <input asp-for="McpdHeaderId" class="form-control" />
+                <span asp-validation-for="McpdHeaderId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlanCode" class="control-label"></label>
+                <input asp-for="PlanCode" class="form-control" />
+                <span asp-validation-for="PlanCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cin" class="control-label"></label>
+                <input asp-for="Cin" class="form-control" />
+                <span asp-validation-for="Cin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppealId" class="control-label"></label>
+                <input asp-for="AppealId" class="form-control" />
+                <span asp-validation-for="AppealId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecordType" class="control-label"></label>
+                <input asp-for="RecordType" class="form-control" />
+                <span asp-validation-for="RecordType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParentGrievanceId" class="control-label"></label>
+                <input asp-for="ParentGrievanceId" class="form-control" />
+                <span asp-validation-for="ParentGrievanceId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParentAppealId" class="control-label"></label>
+                <input asp-for="ParentAppealId" class="form-control" />
+                <span asp-validation-for="ParentAppealId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppealReceivedDate" class="control-label"></label>
+                <input asp-for="AppealReceivedDate" class="form-control" />
+                <span asp-validation-for="AppealReceivedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NoticeOfActionDate" class="control-label"></label>
+                <input asp-for="NoticeOfActionDate" class="form-control" />
+                <span asp-validation-for="NoticeOfActionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppealType" class="control-label"></label>
+                <input asp-for="AppealType" class="form-control" />
+                <span asp-validation-for="AppealType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BenefitType" class="control-label"></label>
+                <input asp-for="BenefitType" class="form-control" />
+                <span asp-validation-for="BenefitType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppealResolutionStatusIndicator" class="control-label"></label>
+                <input asp-for="AppealResolutionStatusIndicator" class="form-control" />
+                <span asp-validation-for="AppealResolutionStatusIndicator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AppealResolutionDate" class="control-label"></label>
+                <input asp-for="AppealResolutionDate" class="form-control" />
+                <span asp-validation-for="AppealResolutionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PartiallyOverturnIndicator" class="control-label"></label>
+                <input asp-for="PartiallyOverturnIndicator" class="form-control" />
+                <span asp-validation-for="PartiallyOverturnIndicator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpeditedIndicator" class="control-label"></label>
+                <input asp-for="ExpeditedIndicator" class="form-control" />
+                <span asp-validation-for="ExpeditedIndicator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

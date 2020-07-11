@@ -1,0 +1,146 @@
+﻿@model mcpdipData.McpdContinuityOfCare
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>McpdContinuityOfCare</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.McpdHeaderId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.McpdHeaderId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PlanCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PlanCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cin)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cin)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CocId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CocId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RecordType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RecordType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ParentCocId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ParentCocId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CocReceivedDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CocReceivedDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CocType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CocType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BenefitType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BenefitType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CocDispositionIndicator)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CocDispositionIndicator)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CocExpirationDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CocExpirationDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CocDenialReasonIndicator)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CocDenialReasonIndicator)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SubmittingProviderNpi)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SubmittingProviderNpi)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CocProviderNpi)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CocProviderNpi)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProviderTaxonomy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProviderTaxonomy)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MerExemptionId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MerExemptionId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ExemptionToEnrollmentDenialCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExemptionToEnrollmentDenialCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ExemptionToEnrollmentDenialDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExemptionToEnrollmentDenialDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MerCocDispositionIndicator)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MerCocDispositionIndicator)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MerCocDispositionDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MerCocDispositionDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ReasonMerCocNotMetIndicator)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ReasonMerCocNotMetIndicator)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.McpdContinuityOfCareId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+

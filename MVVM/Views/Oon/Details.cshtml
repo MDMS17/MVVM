@@ -1,0 +1,123 @@
+﻿@model mcpdipData.McpdOutOfNetwork
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>McpdOutOfNetwork</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.McpdHeaderId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.McpdHeaderId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PlanCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PlanCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cin)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cin)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OonId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OonId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RecordType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RecordType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ParentOonId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ParentOonId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OonRequestReceivedDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OonRequestReceivedDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OonRequestResolvedDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OonRequestResolvedDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PartialApprovalExplanation)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PartialApprovalExplanation)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SpecialistProviderNpi)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SpecialistProviderNpi)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProviderTaxonomy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProviderTaxonomy)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ServiceLocationAddressLine1)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ServiceLocationAddressLine1)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ServiceLocationAddressLine2)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ServiceLocationAddressLine2)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ServiceLocationCity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ServiceLocationCity)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ServiceLocationState)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ServiceLocationState)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ServiceLocationZip)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ServiceLocationZip)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ServiceLocationCountry)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ServiceLocationCountry)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.McpdOutOfNetworkId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+

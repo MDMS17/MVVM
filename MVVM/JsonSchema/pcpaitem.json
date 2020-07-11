@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PCPA Record",
+  "description": "Primary Care Physician Assignment record",
+  "type": "object",
+  "properties": {
+    "planCode": {
+      "description": "The plan code for each county which plan operates in. Do not report subcontracting health plans separately",
+      "type": "string",
+      "maxLength": 3
+    },
+    "cin": {
+      "description": "The member's CIN number – a nine-digit number that consists of eight numbers and one letter. CINs must lead with a 9 and end with an alpha character",
+      "type": "string",
+      "pattern": "^[0-9]{8}[A-Z]$"
+    },
+    "npi": {
+      "description": "The ten-digit NPI of the assigned primary care provider as of the last day of the reporting period",
+      "type": "string",
+      "pattern": "^[0-9]{10}$"
+    }
+  },
+  "required": [
+    "planCode",
+    "cin",
+    "npi"
+  ],
+  "additionalProperties": false
+}

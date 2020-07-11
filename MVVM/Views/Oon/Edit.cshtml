@@ -1,0 +1,124 @@
+﻿@model mcpdipData.McpdOutOfNetwork
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h1>Edit</h1>
+
+    <h4>McpdOutOfNetwork</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="McpdOutOfNetworkId" />
+                <div class="form-group">
+                    <label asp-for="McpdHeaderId" class="control-label"></label>
+                    <input asp-for="McpdHeaderId" class="form-control" />
+                    <span asp-validation-for="McpdHeaderId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PlanCode" class="control-label"></label>
+                    <input asp-for="PlanCode" class="form-control" />
+                    <span asp-validation-for="PlanCode" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cin" class="control-label"></label>
+                    <input asp-for="Cin" class="form-control" />
+                    <span asp-validation-for="Cin" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="OonId" class="control-label"></label>
+                    <input asp-for="OonId" class="form-control" />
+                    <span asp-validation-for="OonId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="RecordType" class="control-label"></label>
+                    <input asp-for="RecordType" class="form-control" />
+                    <span asp-validation-for="RecordType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ParentOonId" class="control-label"></label>
+                    <input asp-for="ParentOonId" class="form-control" />
+                    <span asp-validation-for="ParentOonId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="OonRequestReceivedDate" class="control-label"></label>
+                    <input asp-for="OonRequestReceivedDate" class="form-control" />
+                    <span asp-validation-for="OonRequestReceivedDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="OonRequestResolvedDate" class="control-label"></label>
+                    <input asp-for="OonRequestResolvedDate" class="form-control" />
+                    <span asp-validation-for="OonRequestResolvedDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PartialApprovalExplanation" class="control-label"></label>
+                    <input asp-for="PartialApprovalExplanation" class="form-control" />
+                    <span asp-validation-for="PartialApprovalExplanation" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SpecialistProviderNpi" class="control-label"></label>
+                    <input asp-for="SpecialistProviderNpi" class="form-control" />
+                    <span asp-validation-for="SpecialistProviderNpi" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProviderTaxonomy" class="control-label"></label>
+                    <input asp-for="ProviderTaxonomy" class="form-control" />
+                    <span asp-validation-for="ProviderTaxonomy" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ServiceLocationAddressLine1" class="control-label"></label>
+                    <input asp-for="ServiceLocationAddressLine1" class="form-control" />
+                    <span asp-validation-for="ServiceLocationAddressLine1" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ServiceLocationAddressLine2" class="control-label"></label>
+                    <input asp-for="ServiceLocationAddressLine2" class="form-control" />
+                    <span asp-validation-for="ServiceLocationAddressLine2" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ServiceLocationCity" class="control-label"></label>
+                    <input asp-for="ServiceLocationCity" class="form-control" />
+                    <span asp-validation-for="ServiceLocationCity" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ServiceLocationState" class="control-label"></label>
+                    <input asp-for="ServiceLocationState" class="form-control" />
+                    <span asp-validation-for="ServiceLocationState" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ServiceLocationZip" class="control-label"></label>
+                    <input asp-for="ServiceLocationZip" class="form-control" />
+                    <span asp-validation-for="ServiceLocationZip" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ServiceLocationCountry" class="control-label"></label>
+                    <input asp-for="ServiceLocationCountry" class="form-control" />
+                    <span asp-validation-for="ServiceLocationCountry" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TradingPartnerCode" class="control-label"></label>
+                    <input asp-for="TradingPartnerCode" class="form-control" />
+                    <span asp-validation-for="TradingPartnerCode" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DataSource" class="control-label"></label>
+                    <input asp-for="DataSource" class="form-control" />
+                    <span asp-validation-for="DataSource" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+</div>

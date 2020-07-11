@@ -1,0 +1,422 @@
+﻿@model mcpdandpcpa.Models.PcpaViewModel
+@addTagHelper mcpdandpcpa.Extensions.*, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="Index">
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li><a data-toggle="tab" href="#PcpaCurrent" id="linkPcpaCurrent" onclick="$('#linkPcpaCurrent').css('color','purple');$('#linkPcpaHistory').css('color','black');$('#linkPcpaError').css('color','black');" style="@Model.TabStyleColorCurrent">PCP Assignment Staging</a>&nbsp;&nbsp;|&nbsp;&nbsp;</li>
+            <li><a data-toggle="tab" href="#PcpaHistory" id="linkPcpaHistory" onclick="$('#linkPcpaCurrent').css('color','black');$('#linkPcpaHistory').css('color','purple');$('#linkPcpaError').css('color','black');" style="@Model.TabStyleColorHistory">History</a>&nbsp;&nbsp;|&nbsp;&nbsp;</li>
+            <li><a data-toggle="tab" href="#PcpaError" id="linkPcpaError" onclick="$('#linkPcpaCurrent').css('color','black');$('#linkPcpaHistory').css('color','black');$('#linkPcpaError').css('color','purple');" style="@Model.TabStyleColorError">Error</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="PcpaCurrent" class="tab-pane @Model.TabActiveCurrent">
+                <table style="width:100%">
+                    <tr>
+                        <td>
+                            <label>Source:</label>
+                            <select asp-for="selectedTradingPartner" asp-items="@Model.TradingPartners"></select>
+                        </td>
+                        <td>
+                            <label>CIN:</label>
+                            <input asp-for="CinCurrent" size="8" />
+                        </td>
+                        <td>
+                            <label>Data Source:</label>
+                            <input asp-for="DataSourceCurrent" size="6" />
+                        </td>
+                        <td rowspan="2">
+                            <input type="submit" value="Refresh" asp-route-id="1" class="btn btn-primary" />
+                        </td>
+                        <td rowspan="2" class="float-right">
+                            <select asp-for="selectedExport" asp-items="@Model.DropdownExport"></select>
+                            <input type="submit" value="Download" asp-action="DownloadFile" asp-route-id="4" class="btn btn-primary" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>PlanCode:</label>
+                            <select asp-for="PlanCodeCurrent" asp-items="@Model.DropdownPlanCodes"></select>
+                        </td>
+                        <td>
+                            <label>NPI:</label>
+                            <input asp-for="NpiCurrent" size="8" />
+                        </td>
+                    </tr>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Source
+                            </th>
+                            <th>
+                                PlanCode
+                            </th>
+                            <th>
+                                CIN
+                            </th>
+                            <th>
+                                NPI
+                            </th>
+                            <th>
+                                Datasource
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.PcpaCurrent)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TradingPartnerCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PlanCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cin)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Npi)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DataSource)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.PcpAssignmentId">Edit</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.PcpAssignmentId">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <table>
+                    <tr>
+                        @if (Model.currentFirstDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="101" value="First" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="101" value="First" /></td>
+                        }
+                        @if (Model.currentPreviousDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="102" value="Previous" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="102" value="Previous" /></td>
+                        }
+                        <td><input asp-for="PageCurrent" class="form-control" size="6" readonly="readonly" /></td>
+                        @if (Model.currentNextDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="103" value="Next" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="103" value="Next" /></td>
+                        }
+                        @if (Model.currentLastDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="104" value="Last" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="104" value="Last" /></td>
+                        }
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><input asp-for="tbPageCurrent" class="form-control" size="6" id="clientPcpaPageCurrent" /></td>
+                        <td>&nbsp;Of&nbsp;</td>
+                        <td><input asp-for="PageCurrentTotal" class="form-control" size="6" readonly="readonly" id="clientPcpaPageCurrentTotal" /></td>
+                        <td><input type="submit" class="page-link" asp-route-id="105" value="Goto Page" onclick="return GotoPageClientClick('clientPcpaPageCurrent','clientPcpaPageCurrentTotal');" /></td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><select asp-for="PageSizeCurrent" asp-items="@Model.PageSizeDropdown"></select></td>
+                        <td><input type="submit" class="page-link" asp-route-id="106" value="Change Page Size" /></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="PcpaHistory" class="tab-pane @Model.TabActiveHistory">
+                <table style="width:100%">
+                    <tr>
+                        <td>
+                            <label>Source:</label>
+                            <select asp-for="selectedTradingPartnerHistory" asp-items="@Model.TradingPartners"></select>
+                        </td>
+                        <td>
+                            <label>Year:</label>
+                            <select asp-for="selectedYearHistory" asp-items="@Model.DropdownYear"></select>
+                        </td>
+                        <td>
+                            <label>Month:</label>
+                            <select asp-for="selectedMonthHistory" asp-items="@Model.DropdownMonth"></select>
+                        </td>
+                        <td rowspan="2">
+                            <input type="submit" value="Refresh" asp-route-id="2" class="btn btn-primary" />
+                        </td>
+                        <td rowspan="2" class="float-right">
+                            <select asp-for="selectedExportHistory" asp-items="@Model.DropdownExport"></select>
+                            <input type="submit" value="Download" asp-action="DownloadFile" asp-route-id="5" class="btn btn-primary" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>PlanCode:</label>
+                            <select asp-for="PlanCodeHistory" asp-items="@Model.DropdownPlanCodes"></select>
+                        </td>
+                        <td>
+                            <label>CIN:</label>
+                            <input asp-for="CinHistory" size="8" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>NPI:</label>
+                            <input asp-for="NpiHistory" size=" 8" />
+                        </td>
+                        <td>
+                            <label>Data Source:</label>
+                            <input asp-for="DataSourceHistory" size="8" />
+                        </td>
+                    </tr>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Source
+                            </th>
+                            <th>
+                                PlanCode
+                            </th>
+                            <th>
+                                CIN
+                            </th>
+                            <th>
+                                NPI
+                            </th>
+                            <th>
+                                DataSource
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.PcpaHistory)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TradingPartnerCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PlanCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cin)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Npi)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DataSource)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <table>
+                    <tr>
+                        @if (Model.historyFirstDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="201" value="First" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="201" value="First" /></td>
+                        }
+                        @if (Model.historyPreviousDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="202" value="Previous" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="202" value="Previous" /></td>
+                        }
+                        <td><input asp-for="PageHistory" class="form-control" size="6" readonly="readonly" /></td>
+                        @if (Model.historyNextDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="203" value="Next" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="203" value="Next" /></td>
+                        }
+                        @if (Model.historyLastDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="204" value="Last" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="204" value="Last" /></td>
+                        }
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><input asp-for="tbPageHistory" class="form-control" size="6" id="clientPcpaPageHistory" /></td>
+                        <td>&nbsp;Of&nbsp;</td>
+                        <td><input asp-for="PageHistoryTotal" class="form-control" size="6" readonly="readonly" id="clientPcpaPageHistoryTotal" /></td>
+                        <td><input type="submit" class="page-link" asp-route-id="205" value="Goto Page" onclick="return GotoPageClientClick('clientPcpaPageHistory','clientPcpaPageHistoryTotal');" /></td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><select asp-for="PageSizeHistory" asp-items="@Model.PageSizeDropdown"></select></td>
+                        <td><input type="submit" class="page-link" asp-route-id="206" value="Change Page Size" /></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="PcpaError" class="tab-pane @Model.TabActiveError">
+                <table style="width:100%">
+                    <tr>
+                        <td>
+                            <label>Source:</label>
+                            <select asp-for="selectedTradingPartnerError" asp-items="@Model.TradingPartners"></select>
+                        </td>
+                        <td>
+                            <label>Year:</label>
+                            <select asp-for="selectedYearError" asp-items="@Model.DropdownYear"></select>
+                        </td>
+                        <td>
+                            <label>Month:</label>
+                            <select asp-for="selectedMonthError" asp-items="@Model.DropdownMonth"></select>
+                        </td>
+                        <td rowspan="2">
+                            <input type="submit" value="Refresh" asp-route-id="3" class="btn btn-primary" />
+                        </td>
+                        <td rowspan="2" class="float-right">
+                            <select asp-for="selectedExportError" asp-items="@Model.DropdownExport"></select>
+                            <input type="submit" value="Download" asp-action="DownloadFile" asp-route-id="6" class="btn btn-primary" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>PlanCode:</label>
+                            <select asp-for="PlanCodeError" asp-items="@Model.DropdownPlanCodes"></select>
+                        </td>
+                        <td>
+                            <label>CIN:</label>
+                            <input asp-for="CinError" size="8" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>NPI:</label>
+                            <input asp-for="NpiError" size=" 8" />
+                        </td>
+                        <td>
+                            <label>Data Source:</label>
+                            <input asp-for="DataSourceHistory" size="8" />
+                        </td>
+                    </tr>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Source
+                            </th>
+                            <th>
+                                PlanCode
+                            </th>
+                            <th>
+                                CIN
+                            </th>
+                            <th>
+                                NPI
+                            </th>
+                            <th>
+                                DataSource
+                            </th>
+                            <th>
+                                ErrorMessage
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.PcpaError)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TradingPartnerCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PlanCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cin)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Npi)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DataSource)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ErrorMessage)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <table>
+                    <tr>
+                        @if (Model.errorFirstDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="301" value="First" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="301" value="First" /></td>
+                        }
+                        @if (Model.errorPreviousDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="302" value="Previous" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="302" value="Previous" /></td>
+                        }
+                        <td><input asp-for="PageError" class="form-control" size="6" readonly="readonly" /></td>
+                        @if (Model.errorNextDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="303" value="Next" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="303" value="Next" /></td>
+                        }
+                        @if (Model.errorLastDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="304" value="Last" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="304" value="Last" /></td>
+                        }
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><input asp-for="tbPageError" class="form-control" size="6" id="clientPcpaPageError" /></td>
+                        <td>&nbsp;Of&nbsp;</td>
+                        <td><input asp-for="PageErrorTotal" class="form-control" size="6" readonly="readonly" id="clientPcpaPageErrorTotal" /></td>
+                        <td><input type="submit" class="page-link" asp-route-id="305" value="Goto Page" onclick="return GotoPageClientClick('clientPcpaPageError','clientPcpaPageErrorTotal');" /></td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><select asp-for="PageSizeError" asp-items="@Model.PageSizeDropdown"></select></td>
+                        <td><input type="submit" class="page-link" asp-route-id="306" value="Change Page Size" /></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+
+

@@ -1,0 +1,908 @@
+﻿@model mcpdandpcpa.Models.AppealViewModel
+@{
+    ViewData["Title"] = "index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<form asp-action="Index">
+    <div>
+        <ul class=" container nav nav-tabs">
+            <li><a data-toggle="tab" href="#AppealCurrent" id="linkAppealCurrent" onclick="$('#linkAppealCurrent').css('color','purple');$('#linkAppealHistory').css('color','black');$('#linkAppealError').css('color','black');" style="color:purple;">Appeal Staging</a>&nbsp;&nbsp;|&nbsp;&nbsp;</li>
+            <li><a data-toggle="tab" href="#AppealHistory" id="linkAppealHistory" onclick="$('#linkAppealCurrent').css('color','black');$('#linkAppealHistory').css('color','purple');$('#linkAppealError').css('color','black');">History</a>&nbsp;&nbsp;|&nbsp;&nbsp;</li>
+            <li><a data-toggle="tab" href="#AppealError" id="linkAppealError" onclick="$('#linkAppealCurrent').css('color','black');$('#linkAppealHistory').css('color','black');$('#linkAppealError').css('color','purple');">Error</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="AppealCurrent" class="tab-pane @Model.TabActiveCurrent">
+                <table style="width:100%;">
+                    <tr>
+                        <td>
+                            <label>Source:</label>
+                            <select asp-for="selectedTradingPartner" asp-items="@Model.TradingPartners"></select>
+                        </td>
+                        <td></td>
+                        <td>
+                            <label>PlanCode:</label>
+                            <select asp-for="PlanCodeCurrent" asp-items="@Model.DropdownPlanCodes"></select>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <input type="submit" value="Refresh" asp-route-id="1" class="btn btn-primary" />
+                        </td>
+                        <td class="float-right">
+                            <select asp-for="selectedExport" asp-items="@Model.DropdownExport"></select>
+                            <input type="submit" value="Download" asp-action="Downloadfile" asp-route-id="4" class="btn btn-primary" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="sm11" asp-items="@Model.AppealCascadeDropdown" id="smid11" onchange="McpdCascadeSelection_Changed(this,24);"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st11" id="stid11" size="6" style="@Model.sm11Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm12" asp-items="@Model.AppealCascadeDropdown" id="smid12" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.sm11Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st12" id="stid12" size="6" style="@Model.sm12Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm13" asp-items="@Model.AppealCascadeDropdown" id="smid13" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.sm12Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st13" id="stid13" size="6" style="@Model.sm13Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="sm14" asp-items="@Model.AppealCascadeDropdown" id="smid14" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.sm13Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st14" id="stid14" size="6" style="@Model.sm14Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm15" asp-items="@Model.AppealCascadeDropdown" id="smid15" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.sm14Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st15" id="stid15" size="6" style="@Model.sm15Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm16" asp-items="@Model.AppealCascadeDropdown" id="smid16" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.sm15Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st16" id="stid16" size="6" style="@Model.sm16Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="sm17" asp-items="@Model.AppealCascadeDropdown" id="smid17" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.sm16Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st17" id="stid17" size="6" style="@Model.sm17Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm18" asp-items="@Model.AppealCascadeDropdown" id="smid18" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.sm17Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st18" id="stid18" size="6" style="@Model.sm18Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm19" asp-items="@Model.AppealCascadeDropdown" id="smid19" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.sm18Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st19" id="stid19" size="6" style="@Model.sm19Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="sm20" asp-items="@Model.AppealCascadeDropdown" id="smid20" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.sm19Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st20" id="stid20" size="6" style="@Model.sm20Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm21" asp-items="@Model.AppealCascadeDropdown" id="smid21" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.sm20Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st21" id="stid21" size="6" style="@Model.sm21Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm22" asp-items="@Model.AppealCascadeDropdown" id="smid22" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.sm21Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st22" id="stid22" size="6" style="@Model.sm22Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="sm23" asp-items="@Model.AppealCascadeDropdown" id="smid23" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.sm22Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st23" id="stid23" size="6" style="@Model.sm23Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm24" asp-items="@Model.AppealCascadeDropdown" id="smid24" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.sm23Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st24" id="stid24" size="6" style="@Model.sm24Style" />
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table class="table" style="white-space:nowrap;">
+                    <thead>
+                        <tr>
+                            <th>
+                                Source
+                            </th>
+                            <th>
+                                PlanCode
+                            </th>
+                            <th>
+                                CIN
+                            </th>
+                            <th>
+                                AppealId
+                            </th>
+                            <th>
+                                RecordType
+                            </th>
+                            <th>
+                                ParentGrievanceId
+                            </th>
+                            <th>
+                                ParentAppealId
+                            </th>
+                            <th>
+                                ReceiveDate
+                            </th>
+                            <th>
+                                ActionDate
+                            </th>
+                            <th>
+                                AppealType
+                            </th>
+                            <th>
+                                BenefitType
+                            </th>
+                            <th>
+                                StatusIndicator
+                            </th>
+                            <th>
+                                ResolutionDate
+                            </th>
+                            <th>
+                                OverturnIndicator
+                            </th>
+                            <th>
+                                ExpediteIndicator
+                            </th>
+                            <th>
+                                DataSource
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.AppealCurrent)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TradingPartnerCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PlanCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cin)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AppealId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RecordType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ParentGrievanceId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ParentAppealId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AppealReceivedDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NoticeOfActionDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AppealType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BenefitType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AppealResolutionStatusIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AppealResolutionDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PartiallyOverturnIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExpeditedIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DataSource)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.McpdAppealId">Edit</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.McpdAppealId">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <table>
+                    <tr>
+                        @if (Model.currentFirstDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="101" value="First" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="101" value="First" /></td>
+                        }
+                        @if (Model.currentPreviousDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="102" value="Previous" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="102" value="Previous" /></td>
+                        }
+                        <td><input asp-for="PageCurrent" class="form-control" size="6" readonly="readonly" /></td>
+                        @if (Model.currentNextDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="103" value="Next" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="103" value="Next" /></td>
+                        }
+                        @if (Model.currentLastDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="104" value="Last" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="104" value="Last" /></td>
+                        }
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><input asp-for="tbPageCurrent" class="form-control" size="6" id="clientAppealPageCurrent" /></td>
+                        <td>&nbsp;Of&nbsp;</td>
+                        <td><input asp-for="PageCurrentTotal" class="form-control" size="6" readonly="readonly" id="clientAppealPageCurrentTotal" /></td>
+                        <td><input type="submit" class="page-link" asp-route-id="105" value="Goto Page" onclick="return GotoPageClientClick('clientAppealPageCurrent','clientAppealPageCurrentTotal');" /></td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><select asp-for="PageSizeCurrent" asp-items="@Model.PageSizeDropdown"></select></td>
+                        <td><input type="submit" class="page-link" asp-route-id="106" value="Change Page Size" /></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="AppealHistory" class="tab-pane @Model.TabActiveHistory">
+                <table style="width:100%;">
+                    <tr>
+                        <td>
+                            <label>Source:</label>
+                            <select asp-for="selectedTradingPartnerHistory" asp-items="@Model.TradingPartners"></select>
+                        </td>
+                        <td>
+                            <label>PlanCode:</label>
+                            <select asp-for="PlanCodeHistory" asp-items="@Model.DropdownPlanCodes"></select>
+                        </td>
+                        <td>
+                            <label>Year:</label>
+                            <select asp-for="selectedYearHistory" asp-items="@Model.DropdownYear"></select>
+                        </td>
+                        <td>
+                            <label>Month:</label>
+                            <select asp-for="selectedMonthHistory" asp-items="@Model.DropdownMonth"></select>
+                        </td>
+                        <td>
+                            <input type="submit" value="Refresh" asp-route-id="2" class="btn btn-primary" />
+                        </td>
+                        <td class="float-right">
+                            <select asp-for="selectedExportHistory" asp-items="@Model.DropdownExport"></select>
+                            <input type="submit" value="Download" asp-action="Downloadfile" asp-route-id="5" class="btn btn-primary" />
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td>
+                            <select asp-for="hm11" asp-items="@Model.AppealCascadeDropdown" id="hmid11" onchange="McpdCascadeSelection_Changed(this,24);"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht11" id="htid11" size="6" style="@Model.hm11Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm12" asp-items="@Model.AppealCascadeDropdown" id="hmid12" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.hm11Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht12" id="htid12" size="6" style="@Model.hm12Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm13" asp-items="@Model.AppealCascadeDropdown" id="hmid13" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.hm12Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht13" id="htid13" size="6" style="@Model.hm13Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="hm14" asp-items="@Model.AppealCascadeDropdown" id="hmid14" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.hm13Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht14" id="htid14" size="6" style="@Model.hm14Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm15" asp-items="@Model.AppealCascadeDropdown" id="hmid15" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.hm14Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht15" id="htid15" size="6" style="@Model.hm15Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm16" asp-items="@Model.AppealCascadeDropdown" id="hmid16" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.hm15Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht16" id="htid16" size="6" style="@Model.hm16Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="hm17" asp-items="@Model.AppealCascadeDropdown" id="hmid17" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.hm16Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht17" id="htid17" size="6" style="@Model.hm17Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm18" asp-items="@Model.AppealCascadeDropdown" id="hmid18" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.hm17Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht18" id="htid18" size="6" style="@Model.hm18Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm19" asp-items="@Model.AppealCascadeDropdown" id="hmid19" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.hm18Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht19" id="htid19" size="6" style="@Model.hm19Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="hm20" asp-items="@Model.AppealCascadeDropdown" id="hmid20" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.hm19Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht20" id="htid20" size="6" style="@Model.hm20Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm21" asp-items="@Model.AppealCascadeDropdown" id="hmid21" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.hm20Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht21" id="htid21" size="6" style="@Model.hm21Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm22" asp-items="@Model.AppealCascadeDropdown" id="hmid22" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.hm21Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht22" id="htid22" size="6" style="@Model.hm22Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="hm23" asp-items="@Model.AppealCascadeDropdown" id="hmid23" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.hm22Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht23" id="htid23" size="6" style="@Model.hm23Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm24" asp-items="@Model.AppealCascadeDropdown" id="hmid24" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.hm23Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht24" id="htid24" size="6" style="@Model.hm24Style" />
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table class="table" style="white-space:nowrap;">
+                    <thead>
+                        <tr>
+                            <th>
+                                Source
+                            </th>
+                            <th>
+                                PlanCode
+                            </th>
+                            <th>
+                                CIN
+                            </th>
+                            <th>
+                                AppealId
+                            </th>
+                            <th>
+                                RecordType
+                            </th>
+                            <th>
+                                ParentGrievanceId
+                            </th>
+                            <th>
+                                ParentAppealId
+                            </th>
+                            <th>
+                                ReceiveDate
+                            </th>
+                            <th>
+                                ActionDate
+                            </th>
+                            <th>
+                                AppealType
+                            </th>
+                            <th>
+                                BenefitType
+                            </th>
+                            <th>
+                                StatusIndicator
+                            </th>
+                            <th>
+                                ResolutionDate
+                            </th>
+                            <th>
+                                OverturnIndicator
+                            </th>
+                            <th>
+                                ExpediteIndicator
+                            </th>
+                            <th>
+                                DataSource
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.AppealHistory)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TradingPartnerCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PlanCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cin)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AppealId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RecordType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ParentGrievanceId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ParentAppealId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AppealReceivedDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NoticeOfActionDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AppealType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BenefitType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AppealResolutionStatusIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AppealResolutionDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PartiallyOverturnIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExpeditedIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DataSource)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <table>
+                    <tr>
+                        @if (Model.historyFirstDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="201" value="First" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="201" value="First" /></td>
+                        }
+                        @if (Model.historyPreviousDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="202" value="Previous" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="202" value="Previous" /></td>
+                        }
+                        <td><input asp-for="PageHistory" class="form-control" size="6" readonly="readonly" /></td>
+                        @if (Model.historyNextDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="203" value="Next" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="203" value="Next" /></td>
+                        }
+                        @if (Model.historyLastDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="204" value="Last" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="204" value="Last" /></td>
+                        }
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><input asp-for="tbPageHistory" class="form-control" size="6" id="clientAppealPageHistory" /></td>
+                        <td>&nbsp;Of&nbsp;</td>
+                        <td><input asp-for="PageHistoryTotal" class="form-control" size="6" readonly="readonly" id="clientAppealPageHistoryTotal" /></td>
+                        <td><input type="submit" class="page-link" asp-route-id="205" value="Goto Page" onclick="return GotoPageClientClick('clientAppealPageHistory','clientAppealPageHistoryTotal');" /></td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><select asp-for="PageSizeHistory" asp-items="@Model.PageSizeDropdown"></select></td>
+                        <td><input type="submit" class="page-link" asp-route-id="206" value="Change Page Size" /></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="AppealError" class="tab-pane @Model.TabActiveError">
+                <table style="width:100%;">
+                    <tr>
+                        <td>
+                            <label>Source:</label>
+                            <select asp-for="selectedTradingPartnerError" asp-items="@Model.TradingPartners"></select>
+                        </td>
+                        <td>
+                            <label>PlanCode:</label>
+                            <select asp-for="PlanCodeError" asp-items="@Model.DropdownPlanCodes"></select>
+                        </td>
+                        <td>
+                            <label>Year:</label>
+                            <select asp-for="selectedYearError" asp-items="@Model.DropdownYear"></select>
+                        </td>
+                        <td>
+                            <label>Month:</label>
+                            <select asp-for="selectedMonthError" asp-items="@Model.DropdownMonth"></select>
+                        </td>
+                        <td>
+                            <input type="submit" value="Refresh" asp-route-id="3" class="btn btn-primary" />
+                        </td>
+                        <td class="float-right">
+                            <select asp-for="selectedExportError" asp-items="@Model.DropdownExport"></select>
+                            <input type="submit" value="Download" asp-action="Downloadfile" asp-route-id="6" class="btn btn-primary" />
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td>
+                            <select asp-for="em11" asp-items="@Model.AppealCascadeDropdown" id="emid11" onchange="McpdCascadeSelection_Changed(this,24);"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et11" id="etid11" size="6" style="@Model.em11Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em12" asp-items="@Model.AppealCascadeDropdown" id="emid12" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.em11Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et12" id="etid12" size="6" style="@Model.em12Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em13" asp-items="@Model.AppealCascadeDropdown" id="emid13" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.em12Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et13" id="etid13" size="6" style="@Model.em13Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="em14" asp-items="@Model.AppealCascadeDropdown" id="emid14" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.em13Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et14" id="etid14" size="6" style="@Model.em14Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em15" asp-items="@Model.AppealCascadeDropdown" id="emid15" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.em14Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et15" id="etid15" size="6" style="@Model.em15Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em16" asp-items="@Model.AppealCascadeDropdown" id="emid16" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.em15Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et16" id="etid16" size="6" style="@Model.em16Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="em17" asp-items="@Model.AppealCascadeDropdown" id="emid17" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.em16Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et17" id="etid17" size="6" style="@Model.em17Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em18" asp-items="@Model.AppealCascadeDropdown" id="emid18" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.em17Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et18" id="etid18" size="6" style="@Model.em18Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em19" asp-items="@Model.AppealCascadeDropdown" id="emid19" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.em18Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et19" id="etid19" size="6" style="@Model.em19Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="em20" asp-items="@Model.AppealCascadeDropdown" id="emid20" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.em19Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et20" id="etid20" size="6" style="@Model.em20Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em21" asp-items="@Model.AppealCascadeDropdown" id="emid21" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.em20Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et21" id="etid21" size="6" style="@Model.em21Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em22" asp-items="@Model.AppealCascadeDropdown" id="emid22" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.em21Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et22" id="etid22" size="6" style="@Model.em22Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="em23" asp-items="@Model.AppealCascadeDropdown" id="emid23" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.em22Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et23" id="etid23" size="6" style="@Model.em23Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em24" asp-items="Model.AppealCascadeDropdown" id="emid24" onchange="McpdCascadeSelection_Changed(this,24);" style="@Model.em23Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et24" id="etid24" size="6" style="@Model.em24Style" />
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table class="table" style="white-space:nowrap;">
+                    <thead>
+                        <tr>
+                            <th>
+                                Source
+                            </th>
+                            <th>
+                                PlanCode
+                            </th>
+                            <th>
+                                CIN
+                            </th>
+                            <th>
+                                AppealId
+                            </th>
+                            <th>
+                                RecordType
+                            </th>
+                            <th>
+                                ParentGrievanceId
+                            </th>
+                            <th>
+                                ParentAppealId
+                            </th>
+                            <th>
+                                ReceiveDate
+                            </th>
+                            <th>
+                                ActionDate
+                            </th>
+                            <th>
+                                AppealType
+                            </th>
+                            <th>
+                                BenefitType
+                            </th>
+                            <th>
+                                StatusIndicator
+                            </th>
+                            <th>
+                                ResolutionDate
+                            </th>
+                            <th>
+                                OverturnIndicator
+                            </th>
+                            <th>
+                                ExpediteIndicator
+                            </th>
+                            <th>
+                                DataSource
+                            </th>
+                            <th>
+                                ErrorMessage
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.AppealError)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TradingPartnerCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PlanCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cin)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AppealId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RecordType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ParentGrievanceId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ParentAppealId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AppealReceivedDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NoticeOfActionDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AppealType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BenefitType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AppealResolutionStatusIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AppealResolutionDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PartiallyOverturnIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExpeditedIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DataSource)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ErrorMessage)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <table>
+                    <tr>
+                        @if (Model.errorFirstDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="301" value="First" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="301" value="First" /></td>
+                        }
+                        @if (Model.errorPreviousDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="302" value="Previous" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="302" value="Previous" /></td>
+                        }
+                        <td><input asp-for="PageError" class="form-control" size="6" readonly="readonly" /></td>
+                        @if (Model.errorNextDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="303" value="Next" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="303" value="Next" /></td>
+                        }
+                        @if (Model.errorLastDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="304" value="Last" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="304" value="Last" /></td>
+                        }
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><input asp-for="tbPageError" class="form-control" size="6" id="clientAppealPageError" /></td>
+                        <td>&nbsp;Of&nbsp;</td>
+                        <td><input asp-for="PageErrorTotal" class="form-control" size="6" readonly="readonly" id="clientAppealPageErrorTotal" /></td>
+                        <td><input type="submit" class="page-link" asp-route-id="305" value="Goto Page" onclick="return GotoPageClientClick('clientAppealPageError','clientAppealPageErrorTotal');" /></td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><select asp-for="PageSizeError" asp-items="@Model.PageSizeDropdown"></select></td>
+                        <td><input type="submit" class="page-link" asp-route-id="306" value="Change Page Size" /></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" asp-for="CinCurrent" />
+    <input type="hidden" asp-for="CinHistory" />
+    <input type="hidden" asp-for="CinError" />
+    <input type="hidden" asp-for="AppealIdCurrent" />
+    <input type="hidden" asp-for="AppealIdHistory" />
+    <input type="hidden" asp-for="AppealIdError" />
+    <input type="hidden" asp-for="RecordTypeCurrent" />
+    <input type="hidden" asp-for="RecordTypeHistory" />
+    <input type="hidden" asp-for="RecordTypeError" />
+    <input type="hidden" asp-for="ParentGrievanceIdCurrent" />
+    <input type="hidden" asp-for="ParentGrievanceIdHistory" />
+    <input type="hidden" asp-for="ParentGrievanceIdError" />
+    <input type="hidden" asp-for="ParentAppealIdCurrent" />
+    <input type="hidden" asp-for="ParentAppealIdHistory" />
+    <input type="hidden" asp-for="ParentAppealIdError" />
+    <input type="hidden" asp-for="ReceiveDateCurrent" />
+    <input type="hidden" asp-for="ReceiveDateHistory" />
+    <input type="hidden" asp-for="ReceiveDateError" />
+    <input type="hidden" asp-for="ActionDateCurrent" />
+    <input type="hidden" asp-for="ActionDateHistory" />
+    <input type="hidden" asp-for="ActionDateError" />
+    <input type="hidden" asp-for="AppealTypeCurrent" />
+    <input type="hidden" asp-for="AppealTypeHistory" />
+    <input type="hidden" asp-for="AppealTypeError" />
+    <input type="hidden" asp-for="BenefitTypeCurrent" />
+    <input type="hidden" asp-for="BenefitTypeHistory" />
+    <input type="hidden" asp-for="BenefitTypeError" />
+    <input type="hidden" asp-for="StatusIndicatorCurrent" />
+    <input type="hidden" asp-for="StatusIndicatorHistory" />
+    <input type="hidden" asp-for="StatusIndicatorError" />
+    <input type="hidden" asp-for="ResolutionDateCurrent" />
+    <input type="hidden" asp-for="ResolutionDateHistory" />
+    <input type="hidden" asp-for="ResolutionDateError" />
+    <input type="hidden" asp-for="OverturnIndicatorCurrent" />
+    <input type="hidden" asp-for="OverturnIndicatorHistory" />
+    <input type="hidden" asp-for="OverturnIndicatorError" />
+    <input type="hidden" asp-for="ExpediteIndicatorCurrent" />
+    <input type="hidden" asp-for="ExpediteIndicatorHistory" />
+    <input type="hidden" asp-for="ExpediteIndicatorError" />
+    <input type="hidden" asp-for="DataSourceCurrent" />
+    <input type="hidden" asp-for="DataSourceHistory" />
+    <input type="hidden" asp-for="DataSourceError" />
+</form>
+
+

@@ -1,0 +1,157 @@
+﻿@model IEnumerable<mcpdipData.ProcessLog>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TradingPartnerCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RecordYear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RecordMonth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GrievanceTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GrievanceSubmits)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GrievanceErrors)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppealTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppealSubmits)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppealErrors)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.COCTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.COCSubmits)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.COCErrors)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OONTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OONSubmits)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OONErrors)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PCPATotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PCPASubmits)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PCPAErrors)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RunStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RunTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RunBy)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TradingPartnerCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecordYear)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecordMonth)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GrievanceTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GrievanceSubmits)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GrievanceErrors)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppealTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppealSubmits)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppealErrors)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.COCTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.COCSubmits)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.COCErrors)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OONTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OONSubmits)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OONErrors)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PCPATotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PCPASubmits)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PCPAErrors)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RunStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RunTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RunBy)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.LogId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.LogId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.LogId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

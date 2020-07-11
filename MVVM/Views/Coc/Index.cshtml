@@ -1,0 +1,1135 @@
+﻿@model mcpdandpcpa.Models.CocViewModel
+@{
+    ViewData["Title"] = "index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<form asp-action="Index">
+    <div>
+        <ul class=" container nav nav-tabs">
+            <li><a data-toggle="tab" href="#CocCurrent" id="linkCocCurrent" onclick="$('#linkCocCurrent').css('color','purple');$('#linkCocHistory').css('color','black');$('#linkCocError').css('color','black');" style="color:purple;">Coc Staging</a>&nbsp;&nbsp;|&nbsp;&nbsp;</li>
+            <li><a data-toggle="tab" href="#CocHistory" id="linkCocHistory" onclick="$('#linkCocCurrent').css('color','black');$('#linkCocHistory').css('color','purple');$('#linkCocError').css('color','black');">History</a>&nbsp;&nbsp;|&nbsp;&nbsp;</li>
+            <li><a data-toggle="tab" href="#CocError" id="linkCocError" onclick="$('#linkCocCurrent').css('color','black');$('#linkCocHistory').css('color','black');$('#linkCocError').css('color','purple');">Error</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="CocCurrent" class="tab-pane @Model.TabActiveCurrent">
+                <table style="width:100%;">
+                    <tr>
+                        <td>
+                            <label>Source:</label>
+                            <select asp-for="selectedTradingPartner" asp-items="@Model.TradingPartners"></select>
+                        </td>
+                        <td></td>
+                        <td>
+                            <label>PlanCode:</label>
+                            <select asp-for="PlanCodeCurrent" asp-items="@Model.DropdownPlanCodes"></select>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <input type="submit" value="Refresh" asp-route-id="1" class="btn btn-primary" />
+                        </td>
+                        <td class="float-right">
+                            <select asp-for="selectedExport" asp-items="@Model.DropdownExport"></select>
+                            <input type="submit" value="Download" asp-action="Downloadfile" asp-route-id="4" class="btn btn-primary" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="sm11" asp-items="@Model.CocCascadeDropdown" id="smid11" onchange="McpdCascadeSelection_Changed(this,30);"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st11" id="stid11" size="6" style="@Model.sm11Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm12" asp-items="@Model.CocCascadeDropdown" id="smid12" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm11Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st12" id="stid12" size="6" style="@Model.sm12Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm13" asp-items="@Model.CocCascadeDropdown" id="smid13" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm12Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st13" id="stid13" size="6" style="@Model.sm13Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="sm14" asp-items="@Model.CocCascadeDropdown" id="smid14" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm13Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st14" id="stid14" size="6" style="@Model.sm14Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm15" asp-items="@Model.CocCascadeDropdown" id="smid15" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm14Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st15" id="stid15" size="6" style="@Model.sm15Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm16" asp-items="@Model.CocCascadeDropdown" id="smid16" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm15Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st16" id="stid16" size="6" style="@Model.sm16Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="sm17" asp-items="@Model.CocCascadeDropdown" id="smid17" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm16Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st17" id="stid17" size="6" style="@Model.sm17Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm18" asp-items="@Model.CocCascadeDropdown" id="smid18" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm17Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st18" id="stid18" size="6" style="@Model.sm18Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm19" asp-items="@Model.CocCascadeDropdown" id="smid19" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm18Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st19" id="stid19" size="6" style="@Model.sm19Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="sm20" asp-items="@Model.CocCascadeDropdown" id="smid20" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm19Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st20" id="stid20" size="6" style="@Model.sm20Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm21" asp-items="@Model.CocCascadeDropdown" id="smid21" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm20Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st21" id="stid21" size="6" style="@Model.sm21Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm22" asp-items="@Model.CocCascadeDropdown" id="smid22" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm21Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st22" id="stid22" size="6" style="@Model.sm22Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="sm23" asp-items="@Model.CocCascadeDropdown" id="smid23" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm22Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st23" id="stid23" size="6" style="@Model.sm23Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm24" asp-items="@Model.CocCascadeDropdown" id="smid24" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm23Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st24" id="stid24" size="6" style="@Model.sm24Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm25" asp-items="@Model.CocCascadeDropdown" id="smid25" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm24Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st25" id="stid25" size="6" style="@Model.sm25Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="sm26" asp-items="@Model.CocCascadeDropdown" id="smid26" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm25Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st26" id="stid26" size="6" style="@Model.sm26Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm27" asp-items="@Model.CocCascadeDropdown" id="smid27" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm26Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st27" id="stid27" size="6" style="@Model.sm27Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm28" asp-items="@Model.CocCascadeDropdown" id="smid28" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm27Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st28" id="stid28" size="6" style="@Model.sm28Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="sm29" asp-items="@Model.CocCascadeDropdown" id="smid29" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm28Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st29" id="stid29" size="6" style="@Model.sm29Style" />
+                        </td>
+                        <td>
+                            <select asp-for="sm30" asp-items="@Model.CocCascadeDropdown" id="smid30" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.sm29Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="st30" id="stid30" size="6" style="@Model.sm30Style" />
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table class="table" style="white-space:nowrap;">
+                    <thead>
+                        <tr>
+                            <th>
+                                Source
+                            </th>
+                            <th>
+                                PlanCode
+                            </th>
+                            <th>
+                                CIN
+                            </th>
+                            <th>
+                                CocId
+                            </th>
+                            <th>
+                                RecordType
+                            </th>
+                            <th>
+                                ParentCocId
+                            </th>
+                            <th>
+                                ReceiveDate
+                            </th>
+                            <th>
+                                CocDispositionInd
+                            </th>
+                            <th>
+                                CocExpirationDate
+                            </th>
+                            <th>
+                                DenialInd
+                            </th>
+                            <th>
+                                SubmitterNPI
+                            </th>
+                            <th>
+                                ProviderNPI
+                            </th>
+                            <th>
+                                ProviderTaxonomy
+                            </th>
+                            <th>
+                                MerExemptionId
+                            </th>
+                            <th>
+                                ExemptionCode
+                            </th>
+                            <th>
+                                ExemptionDate
+                            </th>
+                            <th>
+                                MerDispositionInd
+                            </th>
+                            <th>
+                                MerDispositionDate
+                            </th>
+                            <th>
+                                MerCocNotMetInd
+                            </th>
+                            <th>
+                                DataSource
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.CocCurrent)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TradingPartnerCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PlanCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cin)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RecordType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ParentCocId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocReceivedDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BenefitType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocDispositionIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocExpirationDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocDenialReasonIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SubmittingProviderNpi)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocProviderNpi)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProviderTaxonomy)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MerExemptionId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExemptionToEnrollmentDenialCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExemptionToEnrollmentDenialDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MerCocDispositionIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MerCocDispositionDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ReasonMerCocNotMetIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DataSource)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.McpdContinuityOfCareId">Edit</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.McpdContinuityOfCareId">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <table>
+                    <tr>
+                        @if (Model.currentFirstDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="101" value="First" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="101" value="First" /></td>
+                        }
+                        @if (Model.currentPreviousDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="102" value="Previous" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="102" value="Previous" /></td>
+                        }
+                        <td><input asp-for="PageCurrent" class="form-control" size="6" readonly="readonly" /></td>
+                        @if (Model.currentNextDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="103" value="Next" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="103" value="Next" /></td>
+                        }
+                        @if (Model.currentLastDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="104" value="Last" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="104" value="Last" /></td>
+                        }
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><input asp-for="tbPageCurrent" class="form-control" size="6" id="clientCocPageCurrent" /></td>
+                        <td>&nbsp;Of&nbsp;</td>
+                        <td><input asp-for="PageCurrentTotal" class="form-control" size="6" readonly="readonly" id="clientCocPageCurrentTotal" /></td>
+                        <td><input type="submit" class="page-link" asp-route-id="105" value="Goto Page" onclick="return GotoPageClientClick('clientCocPageCurrent','clientCocPageCurrentTotal');" /></td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><select asp-for="PageSizeCurrent" asp-items="@Model.PageSizeDropdown"></select></td>
+                        <td><input type="submit" class="page-link" asp-route-id="106" value="Change Page Size" /></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="CocHistory" class="tab-pane @Model.TabActiveHistory">
+                <table style="width:100%;">
+                    <tr>
+                        <td>
+                            <label>Source:</label>
+                            <select asp-for="selectedTradingPartnerHistory" asp-items="@Model.TradingPartners"></select>
+                        </td>
+                        <td>
+                            <label>PlanCode:</label>
+                            <select asp-for="PlanCodeHistory" asp-items="@Model.DropdownPlanCodes"></select>
+                        </td>
+                        <td>
+                            <label>Year:</label>
+                            <select asp-for="selectedYearHistory" asp-items="@Model.DropdownYear"></select>
+                        </td>
+                        <td>
+                            <label>Month:</label>
+                            <select asp-for="selectedMonthHistory" asp-items="@Model.DropdownMonth"></select>
+                        </td>
+                        <td>
+                            <input type="submit" value="Refresh" asp-route-id="2" class="btn btn-primary" />
+                        </td>
+                        <td class="float-right">
+                            <select asp-for="selectedExportHistory" asp-items="@Model.DropdownExport"></select>
+                            <input type="submit" value="Download" asp-action="Downloadfile" asp-route-id="5" class="btn btn-primary" />
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td>
+                            <select asp-for="hm11" asp-items="@Model.CocCascadeDropdown" id="hmid11" onchange="McpdCascadeSelection_Changed(this,30);"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht11" id="htid11" size="6" style="@Model.hm11Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm12" asp-items="@Model.CocCascadeDropdown" id="hmid12" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm11Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht12" id="htid12" size="6" style="@Model.hm12Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm13" asp-items="@Model.CocCascadeDropdown" id="hmid13" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm12Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht13" id="htid13" size="6" style="@Model.hm13Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="hm14" asp-items="@Model.CocCascadeDropdown" id="hmid14" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm13Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht14" id="htid14" size="6" style="@Model.hm14Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm15" asp-items="@Model.CocCascadeDropdown" id="hmid15" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm14Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht15" id="htid15" size="6" style="@Model.hm15Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm16" asp-items="@Model.CocCascadeDropdown" id="hmid16" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm15Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht16" id="htid16" size="6" style="@Model.hm16Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="hm17" asp-items="@Model.CocCascadeDropdown" id="hmid17" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm16Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht17" id="htid17" size="6" style="@Model.hm17Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm18" asp-items="@Model.CocCascadeDropdown" id="hmid18" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm17Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht18" id="htid18" size="6" style="@Model.hm18Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm19" asp-items="@Model.CocCascadeDropdown" id="hmid19" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm18Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht19" id="htid19" size="6" style="@Model.hm19Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="hm20" asp-items="@Model.CocCascadeDropdown" id="hmid20" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm19Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht20" id="htid20" size="6" style="@Model.hm20Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm21" asp-items="@Model.CocCascadeDropdown" id="hmid21" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm20Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht21" id="htid21" size="6" style="@Model.hm21Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm22" asp-items="@Model.CocCascadeDropdown" id="hmid22" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm21Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht22" id="htid22" size="6" style="@Model.hm22Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="hm23" asp-items="@Model.CocCascadeDropdown" id="hmid23" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm22Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht23" id="htid23" size="6" style="@Model.hm23Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm24" asp-items="@Model.CocCascadeDropdown" id="hmid24" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm23Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht24" id="htid24" size="6" style="@Model.hm24Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm25" asp-items="@Model.CocCascadeDropdown" id="hmid25" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm24Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht25" id="htid25" size="6" style="@Model.hm25Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="hm26" asp-items="@Model.CocCascadeDropdown" id="hmid26" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm25Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht26" id="htid26" size="6" style="@Model.hm26Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm27" asp-items="@Model.CocCascadeDropdown" id="hmid27" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm26Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht27" id="htid27" size="6" style="@Model.hm27Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm28" asp-items="@Model.CocCascadeDropdown" id="hmid28" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm27Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht28" id="htid28" size="6" style="@Model.hm28Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="hm29" asp-items="@Model.CocCascadeDropdown" id="hmid29" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm28Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht29" id="htid29" size="6" style="@Model.hm29Style" />
+                        </td>
+                        <td>
+                            <select asp-for="hm30" asp-items="@Model.CocCascadeDropdown" id="hmid30" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.hm29Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="ht30" id="htid30" size="6" style="@Model.hm30Style" />
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table class="table" style="white-space:nowrap;">
+                    <thead>
+                        <tr>
+                            <th>
+                                Source
+                            </th>
+                            <th>
+                                PlanCode
+                            </th>
+                            <th>
+                                CIN
+                            </th>
+                            <th>
+                                CocId
+                            </th>
+                            <th>
+                                RecordType
+                            </th>
+                            <th>
+                                ParentCocId
+                            </th>
+                            <th>
+                                ReceiveDate
+                            </th>
+                            <th>
+                                CocDispositionInd
+                            </th>
+                            <th>
+                                CocExpirationDate
+                            </th>
+                            <th>
+                                DenialInd
+                            </th>
+                            <th>
+                                SubmitterNPI
+                            </th>
+                            <th>
+                                ProviderNPI
+                            </th>
+                            <th>
+                                ProviderTaxonomy
+                            </th>
+                            <th>
+                                MerExemptionId
+                            </th>
+                            <th>
+                                ExemptionCode
+                            </th>
+                            <th>
+                                ExemptionDate
+                            </th>
+                            <th>
+                                MerDispositionInd
+                            </th>
+                            <th>
+                                MerDispositionDate
+                            </th>
+                            <th>
+                                MerCocNotMetInd
+                            </th>
+                            <th>
+                                DataSource
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.CocHistory)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TradingPartnerCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PlanCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cin)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RecordType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ParentCocId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocReceivedDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BenefitType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocDispositionIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocExpirationDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocDenialReasonIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SubmittingProviderNpi)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocProviderNpi)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProviderTaxonomy)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MerExemptionId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExemptionToEnrollmentDenialCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExemptionToEnrollmentDenialDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MerCocDispositionIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MerCocDispositionDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ReasonMerCocNotMetIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DataSource)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <table>
+                    <tr>
+                        @if (Model.historyFirstDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="201" value="First" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="201" value="First" /></td>
+                        }
+                        @if (Model.historyPreviousDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="202" value="Previous" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="202" value="Previous" /></td>
+                        }
+                        <td><input asp-for="PageHistory" class="form-control" size="6" readonly="readonly" /></td>
+                        @if (Model.historyNextDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="203" value="Next" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="203" value="Next" /></td>
+                        }
+                        @if (Model.historyLastDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="204" value="Last" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="204" value="Last" /></td>
+                        }
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><input asp-for="tbPageHistory" class="form-control" size="6" id="clientCocPageHistory" /></td>
+                        <td>&nbsp;Of&nbsp;</td>
+                        <td><input asp-for="PageHistoryTotal" class="form-control" size="6" readonly="readonly" id="clientCocPageHistoryTotal" /></td>
+                        <td><input type="submit" class="page-link" asp-route-id="205" value="Goto Page" onclick="return GotoPageClientClick('clientCocPageHistory','clientCocPageHistoryTotal');" /></td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><select asp-for="PageSizeHistory" asp-items="@Model.PageSizeDropdown"></select></td>
+                        <td><input type="submit" class="page-link" asp-route-id="206" value="Change Page Size" /></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="CocError" class="tab-pane @Model.TabActiveError">
+                <table style="width:100%;">
+                    <tr>
+                        <td>
+                            <label>Source:</label>
+                            <select asp-for="selectedTradingPartnerError" asp-items="@Model.TradingPartners"></select>
+                        </td>
+                        <td>
+                            <label>PlanCode:</label>
+                            <select asp-for="PlanCodeError" asp-items="@Model.DropdownPlanCodes"></select>
+                        </td>
+                        <td>
+                            <label>Year:</label>
+                            <select asp-for="selectedYearError" asp-items="@Model.DropdownYear"></select>
+                        </td>
+                        <td>
+                            <label>Month:</label>
+                            <select asp-for="selectedMonthError" asp-items="@Model.DropdownMonth"></select>
+                        </td>
+                        <td>
+                            <input type="submit" value="Refresh" asp-route-id="3" class="btn btn-primary" />
+                        </td>
+                        <td class="float-right">
+                            <select asp-for="selectedExportError" asp-items="@Model.DropdownExport"></select>
+                            <input type="submit" value="Download" asp-action="Downloadfile" asp-route-id="6" class="btn btn-primary" />
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td>
+                            <select asp-for="em11" asp-items="@Model.CocCascadeDropdown" id="emid11" onchange="McpdCascadeSelection_Changed(this,30);"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et11" id="etid11" size="6" style="@Model.em11Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em12" asp-items="@Model.CocCascadeDropdown" id="emid12" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em11Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et12" id="etid12" size="6" style="@Model.em12Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em13" asp-items="@Model.CocCascadeDropdown" id="emid13" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em12Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et13" id="etid13" size="6" style="@Model.em13Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="em14" asp-items="@Model.CocCascadeDropdown" id="emid14" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em13Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et14" id="etid14" size="6" style="@Model.em14Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em15" asp-items="Model.CocCascadeDropdown" id="emid15" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em14Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et15" id="etid15" size="6" style="@Model.em15Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em16" asp-items="@Model.CocCascadeDropdown" id="emid16" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em15Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et16" id="etid16" size="6" style="@Model.em16Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="em17" asp-items="@Model.CocCascadeDropdown" id="emid17" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em16Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et17" id="etid17" size="6" style="@Model.em17Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em18" asp-items="@Model.CocCascadeDropdown" id="emid18" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em17Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et18" id="etid18" size="6" style="@Model.em18Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em19" asp-items="@Model.CocCascadeDropdown" id="emid19" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em18Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et19" id="etid19" size="6" style="@Model.em19Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="em20" asp-items="@Model.CocCascadeDropdown" id="emid20" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em19Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et20" id="etid20" size="6" style="@Model.em20Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em21" asp-items="@Model.CocCascadeDropdown" id="emid21" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em20Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et21" id="etid21" size="6" style="@Model.em21Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em22" asp-items="@Model.CocCascadeDropdown" id="emid22" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em21Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et22" id="etid22" size="6" style="@Model.em22Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="em23" asp-items="@Model.CocCascadeDropdown" id="emid23" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em22Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et23" id="etid23" size="6" style="@Model.em23Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em24" asp-items="@Model.CocCascadeDropdown" id="emid24" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em23Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et24" id="etid24" size="6" style="@Model.em24Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em25" asp-items="@Model.CocCascadeDropdown" id="emid25" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em24Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et25" id="etid25" size="6" style="@Model.em25Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="em26" asp-items="@Model.CocCascadeDropdown" id="emid26" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em25Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et26" id="etid26" size="6" style="@Model.em26Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em27" asp-items="@Model.CocCascadeDropdown" id="emid27" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em26Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et27" id="etid27" size="6" style="@Model.em27Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em28" asp-items="@Model.CocCascadeDropdown" id="emid28" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em27Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et28" id="etid28" size="6" style="@Model.em28Style" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select asp-for="em29" asp-items="@Model.CocCascadeDropdown" id="emid29" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em28Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et29" id="etid29" size="6" style="@Model.em29Style" />
+                        </td>
+                        <td>
+                            <select asp-for="em30" asp-items="@Model.CocCascadeDropdown" id="emid30" onchange="McpdCascadeSelection_Changed(this,30);" style="@Model.em29Style"></select>
+                        </td>
+                        <td>
+                            <input asp-for="et30" id="etid30" size="6" style="@Model.em30Style" />
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table class="table" style="white-space:nowrap;">
+                    <thead>
+                        <tr>
+                            <th>
+                                Source
+                            </th>
+                            <th>
+                                PlanCode
+                            </th>
+                            <th>
+                                CIN
+                            </th>
+                            <th>
+                                CocId
+                            </th>
+                            <th>
+                                RecordType
+                            </th>
+                            <th>
+                                ParentCocId
+                            </th>
+                            <th>
+                                ReceiveDate
+                            </th>
+                            <th>
+                                CocDispositionInd
+                            </th>
+                            <th>
+                                CocExpirationDate
+                            </th>
+                            <th>
+                                DenialInd
+                            </th>
+                            <th>
+                                SubmitterNPI
+                            </th>
+                            <th>
+                                ProviderNPI
+                            </th>
+                            <th>
+                                ProviderTaxonomy
+                            </th>
+                            <th>
+                                MerExemptionId
+                            </th>
+                            <th>
+                                ExemptionCode
+                            </th>
+                            <th>
+                                ExemptionDate
+                            </th>
+                            <th>
+                                MerDispositionInd
+                            </th>
+                            <th>
+                                MerDispositionDate
+                            </th>
+                            <th>
+                                MerCocNotMetInd
+                            </th>
+                            <th>
+                                DataSource
+                            </th>
+                            <th>
+                                ErrorMessage
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.CocError)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TradingPartnerCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PlanCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cin)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RecordType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ParentCocId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocReceivedDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BenefitType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocDispositionIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocExpirationDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocDenialReasonIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SubmittingProviderNpi)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CocProviderNpi)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProviderTaxonomy)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MerExemptionId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExemptionToEnrollmentDenialCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ExemptionToEnrollmentDenialDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MerCocDispositionIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MerCocDispositionDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ReasonMerCocNotMetIndicator)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DataSource)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ErrorMessage)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <table>
+                    <tr>
+                        @if (Model.errorFirstDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="301" value="First" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="301" value="First" /></td>
+                        }
+                        @if (Model.errorPreviousDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="302" value="Previous" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="302" value="Previous" /></td>
+                        }
+                        <td><input asp-for="PageError" class="form-control" size="6" readonly="readonly" /></td>
+                        @if (Model.errorNextDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="303" value="Next" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="303" value="Next" /></td>
+                        }
+                        @if (Model.errorLastDisabled)
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="304" value="Last" disabled="disabled" /></td>
+                        }
+                        else
+                        {
+                            <td><input type="submit" class="page-link" asp-route-id="304" value="Last" /></td>
+                        }
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><input asp-for="tbPageError" class="form-control" size="6" id="clientCocPageError" /></td>
+                        <td>&nbsp;Of&nbsp;</td>
+                        <td><input asp-for="PageErrorTotal" class="form-control" size="6" readonly="readonly" id="clientCocPageErrorTotal" /></td>
+                        <td><input type="submit" class="page-link" asp-route-id="305" value="Goto Page" onclick="return GotoPageClientClick('clientCocPageError','clientCocPageErrorTotal');" /></td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td><select asp-for="PageSizeError" asp-items="@Model.PageSizeDropdown"></select></td>
+                        <td><input type="submit" class="page-link" asp-route-id="306" value="Change Page Size" /></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" asp-for="CinCurrent" />
+    <input type="hidden" asp-for="CinHistory" />
+    <input type="hidden" asp-for="CinError" />
+    <input type="hidden" asp-for="CocIdCurrent" />
+    <input type="hidden" asp-for="CocIdHistory" />
+    <input type="hidden" asp-for="CocIdError" />
+    <input type="hidden" asp-for="RecordTypeCurrent" />
+    <input type="hidden" asp-for="RecordTypeHistory" />
+    <input type="hidden" asp-for="RecordTypeError" />
+    <input type="hidden" asp-for="ParentCocIdCurrent" />
+    <input type="hidden" asp-for="ParentCocIdHistory" />
+    <input type="hidden" asp-for="ParentCocIdError" />
+    <input type="hidden" asp-for="ReceiveDateCurrent" />
+    <input type="hidden" asp-for="ReceiveDateHistory" />
+    <input type="hidden" asp-for="ReceiveDateError" />
+    <input type="hidden" asp-for="CocTypeCurrent" />
+    <input type="hidden" asp-for="CocTypeHistory" />
+    <input type="hidden" asp-for="CocTypeError" />
+    <input type="hidden" asp-for="BenefitTypeCurrent" />
+    <input type="hidden" asp-for="BenefitTypeHistory" />
+    <input type="hidden" asp-for="BenefitTypeError" />
+    <input type="hidden" asp-for="CocDispositionIndCurrent" />
+    <input type="hidden" asp-for="CocDispositionIndHistory" />
+    <input type="hidden" asp-for="CocDispositionIndError" />
+    <input type="hidden" asp-for="ExpirationDateCurrent" />
+    <input type="hidden" asp-for="ExpirationDateHistory" />
+    <input type="hidden" asp-for="ExpirationDateError" />
+    <input type="hidden" asp-for="DenialIndCurrent" />
+    <input type="hidden" asp-for="DenialIndHistory" />
+    <input type="hidden" asp-for="DenialIndError" />
+    <input type="hidden" asp-for="SubmitterNpiCurrent" />
+    <input type="hidden" asp-for="SubmitterNpiHistory" />
+    <input type="hidden" asp-for="SubmitterNpiError" />
+    <input type="hidden" asp-for="ProviderNpiCurrent" />
+    <input type="hidden" asp-for="ProviderNpiHistory" />
+    <input type="hidden" asp-for="ProviderNpiError" />
+    <input type="hidden" asp-for="ProviderTaxonomyCurrent" />
+    <input type="hidden" asp-for="ProviderTaxonomyHistory" />
+    <input type="hidden" asp-for="ProviderTaxonomyError" />
+    <input type="hidden" asp-for="MerExemptionIdCurrent" />
+    <input type="hidden" asp-for="MerExemptionIdHistory" />
+    <input type="hidden" asp-for="MerExemptionIdError" />
+    <input type="hidden" asp-for="ExemptionCodeCurrent" />
+    <input type="hidden" asp-for="ExemptionCodeHistory" />
+    <input type="hidden" asp-for="ExemptionCodeError" />
+    <input type="hidden" asp-for="ExemptionDateCurrent" />
+    <input type="hidden" asp-for="ExemptionDateHistory" />
+    <input type="hidden" asp-for="ExemptionDateError" />
+    <input type="hidden" asp-for="MerDispositionIndCurrent" />
+    <input type="hidden" asp-for="MerDispositionIndHistory" />
+    <input type="hidden" asp-for="MerDispositionIndError" />
+    <input type="hidden" asp-for="MerDispositionDateCurrent" />
+    <input type="hidden" asp-for="MerDispositionDateHistory" />
+    <input type="hidden" asp-for="MerDispositionDateError" />
+    <input type="hidden" asp-for="MerNotMetIndCurrent" />
+    <input type="hidden" asp-for="MerNotMetIndHistory" />
+    <input type="hidden" asp-for="MerNotMetIndError" />
+    <input type="hidden" asp-for="DataSourceCurrent" />
+    <input type="hidden" asp-for="DataSourceHistory" />
+    <input type="hidden" asp-for="DataSourceError" />
+</form>
+

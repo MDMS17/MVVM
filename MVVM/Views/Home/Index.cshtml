@@ -1,0 +1,150 @@
+﻿@model mcpdandpcpa.Models.DashboardViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h1 class="container">Process Log</h1>
+
+<table id="collapsable" class="table">
+    <thead>
+        <tr class="parentYear">
+            <th>
+                Year
+            </th>
+            <th>
+                Month
+            </th>
+            <th>
+                IPA
+            </th>
+            <th>
+                RunBy
+            </th>
+            <th>
+                RunTime
+            </th>
+            <th>
+                PCPATotal
+            </th>
+            <th>
+                PCPASubmits
+            </th>
+            <th>
+                PCPAErrors
+            </th>
+            <th>
+                GrievanceTotal
+            </th>
+            <th>
+                GrievanceSubmits
+            </th>
+            <th>
+                GrievanceErrors
+            </th>
+            <th>
+                AppealTotal
+            </th>
+            <th>
+                AppealSubmits
+            </th>
+            <th>
+                AppealErrors
+            </th>
+            <th>
+                COCTotal
+            </th>
+            <th>
+                COCSubmits
+            </th>
+            <th>
+                COCErrors
+            </th>
+            <th>
+                OONTotal
+            </th>
+            <th>
+                OONSubmits
+            </th>
+            <th>
+                OONErrors
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ProcessLogs)
+        {
+            <tr class="@item.trClass">
+                <td>
+                    @if (item.trClass == "parentYear")
+                    {
+                        <button class="signButton" id="@item.RecordYear">+</button>
+                    }
+                    @Html.DisplayFor(modelItem => item.RecordYear)
+                </td>
+                <td>
+                    @if (item.trClass.StartsWith("parent"))
+                    {
+                        <button class="signButton" id="@item.RecordYear@item.RecordMonth">+</button>
+                    }
+                    @Html.DisplayFor(modelItem => item.RecordMonth)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TradingPartnerCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RunBy)
+                </td>
+                <td>
+                    @item.RunTime.ToString("MMdd HH:mm")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PCPATotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PCPASubmits)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PCPAErrors)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GrievanceTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GrievanceSubmits)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GrievanceErrors)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppealTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppealSubmits)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppealErrors)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.COCTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.COCSubmits)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.COCErrors)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OONTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OONSubmits)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OONErrors)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

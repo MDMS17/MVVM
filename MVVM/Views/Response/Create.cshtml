@@ -1,0 +1,77 @@
+﻿@model mcpdipData.McpdipHeader
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>McpdipHeader</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FileName" class="control-label"></label>
+                <input asp-for="FileName" class="form-control" />
+                <span asp-validation-for="FileName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FileType" class="control-label"></label>
+                <input asp-for="FileType" class="form-control" />
+                <span asp-validation-for="FileType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmitterName" class="control-label"></label>
+                <input asp-for="SubmitterName" class="form-control" />
+                <span asp-validation-for="SubmitterName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmissionDate" class="control-label"></label>
+                <input asp-for="SubmissionDate" class="form-control" />
+                <span asp-validation-for="SubmissionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ValidationStatus" class="control-label"></label>
+                <input asp-for="ValidationStatus" class="form-control" />
+                <span asp-validation-for="ValidationStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Levels" class="control-label"></label>
+                <input asp-for="Levels" class="form-control" />
+                <span asp-validation-for="Levels" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResponseHierarchy" class="control-label"></label>
+                <input asp-for="ResponseHierarchy" class="form-control" />
+                <span asp-validation-for="ResponseHierarchy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SchemaVersion" class="control-label"></label>
+                <input asp-for="SchemaVersion" class="form-control" />
+                <span asp-validation-for="SchemaVersion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecordYear" class="control-label"></label>
+                <input asp-for="RecordYear" class="form-control" />
+                <span asp-validation-for="RecordYear" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecordMonth" class="control-label"></label>
+                <input asp-for="RecordMonth" class="form-control" />
+                <span asp-validation-for="RecordMonth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+

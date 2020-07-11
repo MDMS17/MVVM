@@ -1,0 +1,132 @@
+﻿@model mcpdipData.McpdContinuityOfCare
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>McpdContinuityOfCare</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="McpdHeaderId" class="control-label"></label>
+                <input asp-for="McpdHeaderId" class="form-control" />
+                <span asp-validation-for="McpdHeaderId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlanCode" class="control-label"></label>
+                <input asp-for="PlanCode" class="form-control" />
+                <span asp-validation-for="PlanCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cin" class="control-label"></label>
+                <input asp-for="Cin" class="form-control" />
+                <span asp-validation-for="Cin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CocId" class="control-label"></label>
+                <input asp-for="CocId" class="form-control" />
+                <span asp-validation-for="CocId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecordType" class="control-label"></label>
+                <input asp-for="RecordType" class="form-control" />
+                <span asp-validation-for="RecordType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParentCocId" class="control-label"></label>
+                <input asp-for="ParentCocId" class="form-control" />
+                <span asp-validation-for="ParentCocId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CocReceivedDate" class="control-label"></label>
+                <input asp-for="CocReceivedDate" class="form-control" />
+                <span asp-validation-for="CocReceivedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CocType" class="control-label"></label>
+                <input asp-for="CocType" class="form-control" />
+                <span asp-validation-for="CocType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BenefitType" class="control-label"></label>
+                <input asp-for="BenefitType" class="form-control" />
+                <span asp-validation-for="BenefitType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CocDispositionIndicator" class="control-label"></label>
+                <input asp-for="CocDispositionIndicator" class="form-control" />
+                <span asp-validation-for="CocDispositionIndicator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CocExpirationDate" class="control-label"></label>
+                <input asp-for="CocExpirationDate" class="form-control" />
+                <span asp-validation-for="CocExpirationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CocDenialReasonIndicator" class="control-label"></label>
+                <input asp-for="CocDenialReasonIndicator" class="form-control" />
+                <span asp-validation-for="CocDenialReasonIndicator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmittingProviderNpi" class="control-label"></label>
+                <input asp-for="SubmittingProviderNpi" class="form-control" />
+                <span asp-validation-for="SubmittingProviderNpi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CocProviderNpi" class="control-label"></label>
+                <input asp-for="CocProviderNpi" class="form-control" />
+                <span asp-validation-for="CocProviderNpi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProviderTaxonomy" class="control-label"></label>
+                <input asp-for="ProviderTaxonomy" class="form-control" />
+                <span asp-validation-for="ProviderTaxonomy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MerExemptionId" class="control-label"></label>
+                <input asp-for="MerExemptionId" class="form-control" />
+                <span asp-validation-for="MerExemptionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExemptionToEnrollmentDenialCode" class="control-label"></label>
+                <input asp-for="ExemptionToEnrollmentDenialCode" class="form-control" />
+                <span asp-validation-for="ExemptionToEnrollmentDenialCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExemptionToEnrollmentDenialDate" class="control-label"></label>
+                <input asp-for="ExemptionToEnrollmentDenialDate" class="form-control" />
+                <span asp-validation-for="ExemptionToEnrollmentDenialDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MerCocDispositionIndicator" class="control-label"></label>
+                <input asp-for="MerCocDispositionIndicator" class="form-control" />
+                <span asp-validation-for="MerCocDispositionIndicator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MerCocDispositionDate" class="control-label"></label>
+                <input asp-for="MerCocDispositionDate" class="form-control" />
+                <span asp-validation-for="MerCocDispositionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReasonMerCocNotMetIndicator" class="control-label"></label>
+                <input asp-for="ReasonMerCocNotMetIndicator" class="form-control" />
+                <span asp-validation-for="ReasonMerCocNotMetIndicator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
