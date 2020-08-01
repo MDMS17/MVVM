@@ -16,15 +16,14 @@ namespace mcpdandpcpa.Models
         {
             modelBuilder.HasDefaultSchema("Response");
             modelBuilder.Entity<McpdipHeader>().ToTable("McpdipHeader");
+            modelBuilder.Entity<McpdipHierarchy>().ToTable("McpdipHierarchy");
+            modelBuilder.Entity<McpdipChildren>().ToTable("McpdipChildren");
             modelBuilder.Entity<McpdipDetail>().ToTable("McpdipDetail");
-            modelBuilder.Entity<DetailResponse>().ToTable("DetailResponse");
         }
         public DbSet<McpdipHeader> McpdipHeaders { get; set; }
+        public DbSet<McpdipHierarchy> McpdipHierarchies { get; set; }
+        public DbSet<McpdipChildren> McpdipChildrens { get; set; }
         public DbSet<McpdipDetail> McpdipDetails { get; set; }
-        public DbSet<DetailResponse> DetailResponses { get; set; }
-        public DbSet<mcpdipData.McpdContinuityOfCare> McpdContinuityOfCare { get; set; }
 
     }
 }
-
-

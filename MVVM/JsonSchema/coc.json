@@ -138,7 +138,6 @@
       "type": "string",
       "description": "Indicate if and how MER COC is met",
       "enum": [
-        "The beneficiary was informed of his or her right of continued access",
         "The beneficiary was informed that the MCP and the out-of-network FFS provider were unable to agree to a rate",
         "The MCP has documented quality of care issues",
         "The MCP made a good faith effort to contact the provider and the provider was non-responsive for 30 calendar days",

@@ -10,6 +10,7 @@ namespace mcpdandpcpa.Models
 {
     public class PcpaViewModel
     {
+        public List<string> Ipas { get; set; } = GlobalViewModel.TradingPartners;
         public List<SelectListItem> DropdownYear = GlobalViewModel.DropdownYear.Select(x=>new SelectListItem { Text=x,Value=x}).ToList();
         public List<SelectListItem> DropdownMonth = GlobalViewModel.DropdownMonth.Select(x=>new SelectListItem { Text=x,Value=x}).ToList();
         public List<SelectListItem> TradingPartners { get; set; } = GlobalViewModel.TradingPartners.Select(x=>new SelectListItem { Text=x,Value=x}).ToList();

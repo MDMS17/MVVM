@@ -101,6 +101,12 @@ namespace mcpdandpcpa.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        [HttpPost]
+        public IActionResult Index(int? id, DashboardViewModel model)
+        {
+            //this is for test only, id will be brought in as 991
+            return View(model);
+        }
     }
 }
 

@@ -9,6 +9,7 @@ namespace mcpdandpcpa.Models
 {
     public class McpdViewModel
     {
+        public List<string> Ipas { get; set; } = GlobalViewModel.TradingPartners;
         public List<SelectListItem> TradingPartners { get; set; } = GlobalViewModel.TradingPartners.Select(x=>new SelectListItem { Text=x,Value=x}).ToList();
         public List<SelectListItem> JsonFileMode { get; set; } = GlobalViewModel.JsonFileMode.Select(x=>new SelectListItem { Text=x,Value=x}).ToList();
         public string SelectedJsonFileMode { get; set; }

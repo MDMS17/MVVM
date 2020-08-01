@@ -37,50 +37,53 @@
                 ValidationStatus
             </th>
             <th>
-                TotalPCPASubmitted
+                Numbers
             </th>
-            <th>
-                TotalPCPAAccepted
-            </th>
-            <th>
-                TotalPCPARejected
-            </th>
-            <th>
-                TotalGrievanceSubmitted
-            </th>
-            <th>
-                TotalGrievanceAccepted
-            </th>
-            <th>
-                TotalGrievanceRejected
-            </th>
-            <th>
-                TotalAppealSubmitted
-            </th>
-            <th>
-                TotalAppealAccepted
-            </th>
-            <th>
-                TotalAppealRejected
-            </th>
-            <th>
-                TotalCOCSubmitted
-            </th>
-            <th>
-                TotalCOCAccepted
-            </th>
-            <th>
-                TotalCOCRejected
-            </th>
-            <th>
-                TotalOONSubmitted
-            </th>
-            <th>
-                TotalOONAccepted
-            </th>
-            <th>
-                TotalOONRejected
-            </th>
+            @*<th>
+                    TotalPCPASubmitted
+                </th>
+                <th>
+                    TotalPCPAAccepted
+                </th>
+                <th>
+                    TotalPCPARejected
+                </th>
+                <th>
+                    TotalGrievanceSubmitted
+                </th>
+                <th>
+                    TotalGrievanceAccepted
+                </th>
+                <th>
+                    TotalGrievanceRejected
+                </th>
+                <th>
+                    TotalAppealSubmitted
+                </th>
+                <th>
+                    TotalAppealAccepted
+                </th>
+                <th>
+                    TotalAppealRejected
+                </th>
+                <th>
+                    TotalCOCSubmitted
+                </th>
+                <th>
+                    TotalCOCAccepted
+                </th>
+                <th>
+                    TotalCOCRejected
+                </th>
+                <th>
+                    TotalOONSubmitted
+                </th>
+                <th>
+                    TotalOONAccepted
+                </th>
+                <th>
+                    TotalOONRejected
+                </th>*@
         </tr>
     </thead>
     <tbody>
@@ -123,52 +126,54 @@
                     @Html.DisplayFor(modelItem => item.ValidationStatus)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TotalPCPASubmitted)
+                    <a href="#" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-html="true" data-content="PcpaSubmitted:@item.TotalPCPASubmitted<br/>PcpaAccepted:@item.TotalPCPAAccepted<br/>PcpaRejected:@item.TotalPCPARejected<br/>GrievanceSubmitted:@item.TotalGrievanceSubmitted<br/>GrievanceAccepted:@item.TotalGrievanceAccepted<br/>GrievanceRejected:@item.TotalGrievanceRejected<br/>AppealSubmitted:@item.TotalAppealSubmitted<br/>AppealAccepted:@item.TotalAppealAccepted<br/>AppealRejected:@item.TotalAppealRejected<br/>CocSubmitted:@item.TotalCOCSubmitted<br/>CocAccepted:@item.TotalCOCAccepted<br/>CocRejected:@item.TotalCOCRejected<br/>OonSubmitted:@item.TotalOONSubmitted<br/>OonAccepted:@item.TotalOONAccepted<br/>OonRejected:@item.TotalOONRejected">Numbers...</a>
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalPCPAAccepted)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalPCPARejected)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalGrievanceSubmitted)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalGrievanceAccepted)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalGrievanceRejected)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalAppealSubmitted)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalAppealAccepted)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalAppealRejected)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalCOCSubmitted)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalCOCAccepted)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalCOCRejected)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalOONSubmitted)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalOONAccepted)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalOONRejected)
-                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.TotalPCPASubmitted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalPCPAAccepted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalPCPARejected)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalGrievanceSubmitted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalGrievanceAccepted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalGrievanceRejected)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalAppealSubmitted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalAppealAccepted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalAppealRejected)
+                    </td>
+                    <td>
+                       @Html.DisplayFor(modelItem => item.TotalCOCSubmitted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalCOCAccepted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem=>item.TotalCOCRejected)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem=>item.TotalOONSubmitted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem=>item.TotalOONAccepted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem=>item.TotalOONRejected)
+                    </td>*@
             </tr>
         }
     </tbody>
 </table>
-

@@ -163,5 +163,58 @@ namespace mcpdipData
         public string errorMessage { get; set; }
         public string dataSource { get; set; }
     }
+    public class TestJsonCoc
+    {
+        public string mcpdAppealId { get; set; }
+        public string mcpdHeaderId { get; set; }
+        public string planCode { get; set; }
+        public string cin { get; set; }
+        public string cocId { get; set; }
+        public string recordType { get; set; }
+        public string parentCocId { get; set; }
+        public string cocReceivedDate { get; set; }
+        public string cocType { get; set; }
+        public string benefitType { get; set; }
+        public string cocDispositionIndicator { get; set; }
+        public string cocExpirationDate { get; set; }
+        public string cocDenialReasonIndicator { get; set; }
+        public string submittingProviderNpi { get; set; }
+        public string cocProviderNpi { get; set; }
+        public string providerTaxonomy { get; set; }
+        public string merExemptionId { get; set; }
+        public string exemptionToEnrollmentDenialCode { get; set; }
+        public string exemptionToEnrollmentDenialDate { get; set; }
+        public string merCocDispositionIndicator { get; set; }
+        public string merCocDispositionDate { get; set; }
+        public string reasonMerCocNotMetIndicator { get; set; }
+        public string tradingPartnerCode { get; set; }
+        public string errorMessage { get; set; }
+        public string dataSource { get; set; }
+    }
+    public class TestJsonOon
+    {
+        public string mcpdAppealId { get; set; }
+        public string mcpdHeaderId { get; set; }
+        public string planCode { get; set; }
+        public string cin { get; set; }
+        public string oonId { get; set; }
+        public string recordType { get; set; }
+        public string parentOonId { get; set; }
+        public string oonRequestReceivedDate { get; set; }
+        public string referralRequestReasonIndicator { get; set; }
+        public string oonResolutionStatusIndicator { get; set; }
+        public string oonRequestResolvedDate { get; set; }
+        public string partialApprovalExplanation { get; set; }
+        public string specialistProviderNpi { get; set; }
+        public string providerTaxonomy { get; set; }
+        public string serviceLocationAddressLine1 { get; set; }
+        public string serviceLocationAddressLine2 { get; set; }
+        public string serviceLocationCity { get; set; }
+        public string serviceLocationState { get; set; }
+        public string serviceLocationZip { get; set; }
+        public string serviceLocationCountry { get; set; }
+        public string tradingPartnerCode { get; set; }
+        public string errorMessage { get; set; }
+        public string dataSource { get; set; }
+    }
 }
-

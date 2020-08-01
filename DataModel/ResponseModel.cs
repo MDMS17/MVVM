@@ -17,32 +17,44 @@ namespace mcpdipData
         public string SubmissionDate { get; set; }
         public string ValidationStatus { get; set; }
         public string Levels { get; set; }
-        public string ResponseHierarchy { get; set; }
         public string SchemaVersion { get; set; }
         public string RecordYear { get; set; }
         public string RecordMonth { get; set; }
+    }
+    public class McpdipHierarchy
+    {
+        [Key]
+        public long HierarchyId { get; set; }
+        public long HeaderId { get; set; }
+        public string LevelIdentifier { get; set; }
+        public string SectionIdentifier { get; set; }
+    }
+    public class McpdipChildren
+    {
+        [Key]
+        public long ChildrenId { get; set; }
+        public long HierarchyId { get; set; }
+        public string LevelIdentifier { get; set; }
+        public string SectionIDentifier { get; set; }
     }
 
     public class McpdipDetail
     {
         [Key]
         public long DetailId { get; set; }
-        public int HeaderId { get; set; }
-        public string LevelId { get; set; }
-        public string SectionId { get; set; }
-        public string SubmitterId { get; set; }
-        public string ReceiverId { get; set; }
-    }
-
-    public class DetailResponse
-    {
-        [Key]
-        public long DetailResponseId { get; set; }
-        public long DetailId { get; set; }
+        public string ResponseTarget { get; set; }
+        public long ChildrenId { get; set; }
+        public string ItemReference { get; set; }
         public string Id { get; set; }
         public string Description { get; set; }
         public string Severity { get; set; }
+        public string OriginalTable { get; set; }
+        public long? OriginalId { get; set; }
+        public long? OriginalHeaderId { get; set; }
+        public string OriginalCin { get; set; }
+        public string OriginalItemId { get; set; }
     }
+
     public class ResponseFile
     {
         public string fileName { get; set; }
@@ -75,3 +87,4 @@ namespace mcpdipData
         public List<ResponseDetail> responses { get; set; }
     }
 }
+

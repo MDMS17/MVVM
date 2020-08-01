@@ -1,55 +1,61 @@
-﻿@model IEnumerable<mcpdipData.McpdipHeader>
-
+﻿@model mcpdandpcpa.Models.ResponseViewModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "ResponseLog";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1 class="container">Response Log</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table id="collapsable" class="table">
     <thead>
-        <tr>
+        <tr class="parentYear">
             <th>
-                @Html.DisplayNameFor(model => model.FileName)
+                Year
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FileType)
+                Month
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SubmitterName)
+                FileName
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SubmissionDate)
+                FileType
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ValidationStatus)
+                SubmitterName
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Levels)
+                SubmissionDate
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ResponseHierarchy)
+                ValidationStatus
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SchemaVersion)
+                Levels
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RecordYear)
+                SchemaVersion
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RecordMonth)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.ResponseHeaders)
         {
-            <tr>
+            <tr class="@item.trClass">
+                <td>
+                    @if (item.trClass == "parentYear")
+                    {
+                        <button class="signButton" id="@item.RecordYear">+</button>
+                    }
+                    @Html.DisplayFor(modelItem => item.RecordYear)
+                </td>
+                <td>
+                    @if (item.trClass.StartsWith("parent"))
+                    {
+                        <button class="signButton" id="@item.RecordYear@item.RecordMonth">+</button>
+                    }
+                    @Html.DisplayFor(modelItem => item.RecordMonth)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.FileName)
                 </td>
@@ -69,23 +75,10 @@
                     @Html.DisplayFor(modelItem => item.Levels)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ResponseHierarchy)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.SchemaVersion)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RecordYear)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RecordMonth)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.HeaderId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.HeaderId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.HeaderId">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+

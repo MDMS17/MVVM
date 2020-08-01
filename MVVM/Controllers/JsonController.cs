@@ -56,7 +56,7 @@ namespace mcpdandpcpa.Controllers
                 }
                 else
                 {
-                    foreach (string IPA in model.TradingPartners)
+                    foreach (string IPA in model.Ipas.Except(new List<string>() { "All" }))
                     {
                         processLog = await _contextLog.ProcessLogs.FirstOrDefaultAsync(x => x.TradingPartnerCode == IPA && x.RecordYear == model.mcpdHeader.ReportingPeriod.Substring(0, 4) && x.RecordMonth == model.mcpdHeader.ReportingPeriod.Substring(4, 2));
                         if (processLog == null)
@@ -115,33 +115,199 @@ namespace mcpdandpcpa.Controllers
                 List<Tuple<string, bool, string>> grievanceSchemas = JsonOperations.ValidateGrievance(allGrievances);
                 List<McpdGrievance> validGrievances = new List<McpdGrievance>();
                 List<McpdGrievance> errorGrievances = new List<McpdGrievance>();
+                List<string> dupGrievanceIds = _context.Grievances.GroupBy(x => x.GrievanceId).Where(x => x.Count() > 1).Select(x => x.Key).ToList();
+                string maxReceiveDate = DateTime.Today.ToString("yyyyMM") + "01";
                 foreach (McpdGrievance grievance in allGrievances)
                 {
-                    if (grievanceSchemas.First(x => x.Item1 == grievance.GrievanceId).Item2)
+                    bool hasError = false;
+                    grievance.ErrorMessage = "";
+                    if (!grievanceSchemas.First(x => x.Item1 == grievance.GrievanceId).Item2)
                     {
-                        validGrievances.Add(grievance);
+                        grievance.ErrorMessage = "Schema Error:" + grievanceSchemas.First(x => x.Item1 == grievance.GrievanceId).Item3;
+                        hasError = true;
                     }
                     else
                     {
-                        grievance.ErrorMessage = grievanceSchemas.First(x => x.Item1 == grievance.GrievanceId).Item3;
+                        //BL_Grievance001
+                        if (dupGrievanceIds.Contains(grievance.GrievanceId))
+                        {
+                            grievance.ErrorMessage += "Business Error: Duplicated Grievance Id~";
+                            hasError = true;
+                        }
+                        //BL_Grievance002
+                        if (grievance.GrievanceId.Substring(0, 3) != "305" && grievance.GrievanceId.Substring(0, 3) != "306")
+                        {
+                            grievance.ErrorMessage += "Business Error: grievance id should start with plan code~";
+                            hasError = true;
+                        }
+                        //BL_Grievance003
+                        if (string.Compare(grievance.GrievanceReceivedDate, maxReceiveDate) >= 0)
+                        {
+                            grievance.ErrorMessage += "Business Error: Receive date should be prior to current month~";
+                            hasError = true;
+                        }
+                        //BL_Grievance004
+                        if (grievance.RecordType == "Original" && !string.IsNullOrEmpty(grievance.ParentGrievanceId))
+                        {
+                            grievance.ErrorMessage += "Business Error: Parent grievance id not allowed for Original~";
+                            hasError = true;
+                        }
+                        if (grievance.RecordType != "Original")
+                        {
+                            if (string.IsNullOrEmpty(grievance.ParentGrievanceId))
+                            {
+                                grievance.ErrorMessage += "Business Error: Parent grievance id is missing for non Original~";
+                                hasError = true;
+                            }
+                            else
+                            {
+                                var parentGrievance = _contextHistory.Grievances.FirstOrDefault(x => x.GrievanceId == grievance.ParentGrievanceId);
+                                if (parentGrievance == null)
+                                {
+                                    grievance.ErrorMessage += "Business Error: Parent grievance id couldnot be found~";
+                                    hasError = true;
+                                }
+                                else
+                                {
+                                    var processedGrievance = _contextHistory.Grievances.FirstOrDefault(x => x.ParentGrievanceId == grievance.ParentGrievanceId);
+                                    if (processedGrievance != null)
+                                    {
+                                        grievance.ErrorMessage += "Business Error: Already processed before, no more actions~";
+                                        hasError = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (hasError)
+                    {
+                        if (grievance.ErrorMessage.Length > 255) grievance.ErrorMessage = grievance.ErrorMessage.Substring(0, 255);
                         errorGrievances.Add(grievance);
                     }
+                    else
+                    {
+                        validGrievances.Add(grievance);
+                    }
                 }
-
                 List<McpdAppeal> allAppeals = await _context.Appeals.ToListAsync();
                 List<Tuple<string, bool, string>> appealSchemas = JsonOperations.ValidateAppeal(allAppeals);
                 List<McpdAppeal> validAppeals = new List<McpdAppeal>();
                 List<McpdAppeal> errorAppeals = new List<McpdAppeal>();
+                List<string> dupAppealIds = _context.Appeals.GroupBy(x => x.AppealId).Where(x => x.Count() > 1).Select(x => x.Key).ToList();
                 foreach (McpdAppeal appeal in allAppeals)
                 {
-                    if (appealSchemas.First(x => x.Item1 == appeal.AppealId).Item2)
+                    bool hasError = false;
+                    appeal.ErrorMessage = "";
+                    if (!appealSchemas.First(x => x.Item1 == appeal.AppealId).Item2)
                     {
-                        validAppeals.Add(appeal);
+                        appeal.ErrorMessage = "Schema Error: " + appealSchemas.First(x => x.Item1 == appeal.AppealId).Item3;
+                        hasError = true;
                     }
                     else
                     {
-                        appeal.ErrorMessage = appealSchemas.First(x => x.Item1 == appeal.AppealId).Item3;
+                        //BL_Appeal001
+                        if (dupAppealIds.Contains(appeal.AppealId))
+                        {
+                            appeal.ErrorMessage += "Business Error: Duplicated appeal id~";
+                            hasError = true;
+                        }
+                        //BL_Appeal002
+                        if (appeal.AppealId.Substring(0, 3) != "305" && appeal.AppealId.Substring(0, 3) != "306")
+                        {
+                            appeal.ErrorMessage += "Business Error: Appeal id should start with plan code~";
+                            hasError = true;
+                        }
+                        //BL_Appeal003
+                        if (string.Compare(appeal.AppealReceivedDate, maxReceiveDate) >= 0)
+                        {
+                            appeal.ErrorMessage += "Business Error: Receive date should be prior to current month~";
+                            hasError = true;
+                        }
+                        //BL_Appeal004
+                        if (string.Compare(appeal.NoticeOfActionDate, maxReceiveDate) >= 0)
+                        {
+                            appeal.ErrorMessage += "Business Error: Action date should be prior to current month~";
+                            hasError = true;
+                        }
+                        //BL_Appeal005
+                        if (appeal.RecordType == "Original" && !string.IsNullOrEmpty(appeal.ParentAppealId))
+                        {
+                            appeal.ErrorMessage += "Business Error: Parent appeal id not allowed for Original~";
+                            hasError = true;
+                        }
+                        if (appeal.RecordType != "Original")
+                        {
+                            if (string.IsNullOrEmpty(appeal.ParentAppealId))
+                            {
+                                appeal.ErrorMessage += "Business Error: Parent appeal id is missing for non Original~";
+                                hasError = true;
+                            }
+                            else
+                            {
+                                var parentAppeal = _contextHistory.Appeals.FirstOrDefault(x => x.AppealId == appeal.ParentAppealId);
+                                if (parentAppeal == null)
+                                {
+                                    appeal.ErrorMessage += "Business Error: Parent appeal id couldnot be found~";
+                                    hasError = true;
+                                }
+                                else
+                                {
+                                    var processedAppeal = _contextHistory.Appeals.FirstOrDefault(x => x.ParentAppealId == appeal.ParentAppealId);
+                                    if (processedAppeal != null)
+                                    {
+                                        appeal.ErrorMessage += "Business Error: Already processed before, no more actions~";
+                                        hasError = true;
+                                    }
+                                }
+                            }
+                        }
+                        //BL_Appeal006
+                        if (appeal.AppealResolutionStatusIndicator == "Unresolved")
+                        {
+                            if (!string.IsNullOrEmpty(appeal.AppealResolutionDate))
+                            {
+                                appeal.ErrorMessage += "Business Error: Resolution date not allowed for unresolved appeal~";
+                                hasError = true;
+                            }
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(appeal.AppealResolutionDate))
+                            {
+                                appeal.ErrorMessage += "Business Error: Resolution date must be populated for resolved appeal~";
+                                hasError = true;
+                            }
+                            else
+                            {
+                                if (string.Compare(appeal.AppealResolutionDate, maxReceiveDate) >= 0)
+                                {
+                                    appeal.ErrorMessage += "Business Error: Resolution date should be prior to current month~";
+                                    hasError = true;
+                                }
+                                if (string.Compare(appeal.AppealResolutionDate, appeal.AppealReceivedDate) < 0)
+                                {
+                                    appeal.ErrorMessage += "Business Error: Resolution date cannot be prior to receive date~";
+                                    hasError = true;
+                                }
+                            }
+                        }
+                        if (!string.IsNullOrEmpty(appeal.ParentGrievanceId))
+                        {
+                            var appealParentGrievance = _contextHistory.Grievances.FirstOrDefault(x => x.GrievanceId == appeal.ParentGrievanceId);
+                            if (appealParentGrievance == null)
+                            {
+                                appeal.ParentGrievanceId = null;
+                            }
+                        }
+                    }
+                    if (hasError)
+                    {
+                        if (appeal.ErrorMessage.Length > 255) appeal.ErrorMessage = appeal.ErrorMessage.Substring(0, 255);
                         errorAppeals.Add(appeal);
+                    }
+                    else
+                    {
+                        validAppeals.Add(appeal);
                     }
                 }
 
@@ -149,16 +315,203 @@ namespace mcpdandpcpa.Controllers
                 List<Tuple<string, bool, string>> cocSchemas = JsonOperations.ValidateCOC(allCocs);
                 List<McpdContinuityOfCare> validCocs = new List<McpdContinuityOfCare>();
                 List<McpdContinuityOfCare> errorCocs = new List<McpdContinuityOfCare>();
+                List<string> dupCocIds = _context.McpdContinuityOfCare.GroupBy(x => x.CocId).Where(x => x.Count() > 1).Select(x => x.Key).ToList();
                 foreach (McpdContinuityOfCare coc in allCocs)
                 {
-                    if (cocSchemas.First(x => x.Item1 == coc.CocId).Item2)
+                    bool hasError = false;
+                    coc.ErrorMessage = "";
+                    if (!cocSchemas.First(x => x.Item1 == coc.CocId).Item2)
                     {
-                        validCocs.Add(coc);
+                        coc.ErrorMessage = "Schem Error: " + cocSchemas.First(x => x.Item1 == coc.CocId).Item3;
+                        hasError = true;
                     }
                     else
                     {
-                        coc.ErrorMessage = cocSchemas.First(x => x.Item1 == coc.CocId).Item3;
+                        //BL_Coc001
+                        if (dupCocIds.Contains(coc.CocId))
+                        {
+                            coc.ErrorMessage += "Business Error: Duplicated COC id~";
+                            hasError = true;
+                        }
+                        //BL_Coc002
+                        if (coc.CocId.Substring(0, 3) != "305" && coc.CocId.Substring(0, 3) != "306")
+                        {
+                            coc.ErrorMessage += "Business Error: COC id should start with plan code~";
+                            hasError = true;
+                        }
+                        //BL_Coc003
+                        if (string.Compare(coc.CocReceivedDate, maxReceiveDate) >= 0)
+                        {
+                            coc.ErrorMessage += "Business Error: Receive date should be prior to current month~";
+                            hasError = true;
+                        }
+                        //BL_Coc004
+                        if (coc.RecordType == "Original" && !string.IsNullOrEmpty(coc.ParentCocId))
+                        {
+                            coc.ErrorMessage += "Business Error: Parent COC id not allowed for Original~";
+                            hasError = true;
+                        }
+                        if (coc.RecordType != "Original")
+                        {
+                            if (string.IsNullOrEmpty(coc.ParentCocId))
+                            {
+                                coc.ErrorMessage += "Business Error: Parent COC id is missing for non Original~";
+                                hasError = true;
+                            }
+                            else
+                            {
+                                var parentCoc = _contextHistory.McpdContinuityOfCare.FirstOrDefault(x => x.CocId == coc.ParentCocId);
+                                if (parentCoc == null)
+                                {
+                                    coc.ErrorMessage += "Business Error: Parent COC id couldnot be found~";
+                                    hasError = true;
+                                }
+                                else
+                                {
+                                    var processedCoc = _contextHistory.McpdContinuityOfCare.FirstOrDefault(x => x.ParentCocId == coc.ParentCocId);
+                                    if (processedCoc != null)
+                                    {
+                                        coc.ErrorMessage += "Business Error: Already processed before, no more actions~";
+                                        hasError = true;
+                                    }
+                                }
+                            }
+                        }
+                        //BL_Coc005
+                        if (coc.CocType != "MER Denial" && coc.CocDispositionIndicator == "Provider is in MCP Network")
+                        {
+                            coc.ErrorMessage += "Business Error: COC disposition indicator must <> Provider is in MCP Network, if COC type <> MER Denial~";
+                            hasError = true;
+                        }
+                        //BL_Coc006
+                        if (coc.CocDispositionIndicator == "Denied" && !string.IsNullOrEmpty(coc.CocExpirationDate))
+                        {
+                            coc.ErrorMessage += "Business Error:  Expiration date must be blank if COC disposition indicator = Denied~";
+                            hasError = true;
+                        }
+                        //BL_Coc007
+                        if (coc.CocDispositionIndicator == "Approved" && string.IsNullOrEmpty(coc.CocExpirationDate))
+                        {
+                            coc.ErrorMessage += "Business Error: Expiration date must be populated if COC disposition indicator = Denied~";
+                            hasError = true;
+                        }
+                        //BL_Coc008
+                        if (coc.CocDispositionIndicator == "Denied" && string.IsNullOrEmpty(coc.CocDenialReasonIndicator))
+                        {
+                            coc.ErrorMessage += "Business Error: COC denial reason indicator must be populated if COC disposition indicator = Denied~";
+                            hasError = true;
+                        }
+                        //BL_Coc009
+                        if (coc.CocDispositionIndicator != "Denied" && !string.IsNullOrEmpty(coc.CocDenialReasonIndicator))
+                        {
+                            coc.ErrorMessage += "Business Error: COC denial reason indicator must be blank if COC type <> Denied~";
+                            hasError = true;
+                        }
+                        //BL_Coc010
+                        if (coc.CocType == "MER Denial" && string.IsNullOrEmpty(coc.MerExemptionId))
+                        {
+                            coc.ErrorMessage += "Business Error: MER exemption id must be populated if COC type = MER Denial~";
+                            hasError = true;
+                        }
+                        //BL_Coc011
+                        if (coc.CocType != "MER Denial" && !string.IsNullOrEmpty(coc.MerExemptionId))
+                        {
+                            coc.ErrorMessage += "Business Error: MER excemption id must be blank if COC type <> MER Denial~";
+                            hasError = true;
+                        }
+                        //BL_Coc012
+                        if (coc.CocType == "MER Denial" && string.IsNullOrEmpty(coc.ExemptionToEnrollmentDenialCode))
+                        {
+                            coc.ErrorMessage += "Business Error: Exemption to enrollment denial code must be populated if COC type = MER Denial~";
+                            hasError = true;
+                        }
+                        //BL_Coc013
+                        if (coc.CocType != "MER Denial" && !string.IsNullOrEmpty(coc.ExemptionToEnrollmentDenialCode))
+                        {
+                            coc.ErrorMessage += "Business Error: Exemption to enrollment denial code must be blank if COC type <> MER Denial~";
+                            hasError = true;
+                        }
+                        //BL_Coc014
+                        if (coc.CocType == "MER Denial" && string.IsNullOrEmpty(coc.ExemptionToEnrollmentDenialDate))
+                        {
+                            coc.ErrorMessage += "Business Error: Excemption to enrollment denial date must be populated if COC type = MER Denial~";
+                            hasError = true;
+                        }
+                        //BL_Coc015
+                        if (coc.CocType != "MER Denial" && !string.IsNullOrEmpty(coc.ExemptionToEnrollmentDenialDate))
+                        {
+                            coc.ErrorMessage += "Business Error: Exemption to enrollment denial date must be blank if COC type <> MER Denial~";
+                            hasError = true;
+                        }
+                        //BL_Coc016
+                        if (coc.CocType == "MER Denial" && string.Compare(coc.ExemptionToEnrollmentDenialDate, maxReceiveDate) >= 0)
+                        {
+                            coc.ErrorMessage += "Business Error: Exemption to enrollment denial date must be prior to current month~";
+                            hasError = true;
+                        }
+                        //BL_Coc017
+                        if (coc.MerCocDispositionIndicator != "MER COC Not Met" && coc.CocProviderNpi != coc.SubmittingProviderNpi)
+                        {
+                            coc.ErrorMessage += "Business Error: COC provider NPI must = submitting provider NPI, if MER COC disposition indicator <> MER COC Not Met~";
+                            hasError = true;
+                        }
+                        //BL_Coc018
+                        if (coc.CocType == "MER Denial" && string.IsNullOrEmpty(coc.MerCocDispositionIndicator))
+                        {
+                            coc.ErrorMessage += "Business Error: MER COC disposition indicator must be populated, if COC type = MER Denial~";
+                            hasError = true;
+                        }
+                        //BL_Coc019
+                        if (coc.CocType != "MER Denial" && !string.IsNullOrEmpty(coc.MerCocDispositionIndicator))
+                        {
+                            coc.ErrorMessage += "Business Error: MER COC disposition indicator must be blank if COC type <> MER Denial~";
+                            hasError = true;
+                        }
+                        //BL_Coc020
+                        if (coc.CocType == "MER Denial" && string.IsNullOrEmpty(coc.MerCocDispositionDate))
+                        {
+                            coc.ErrorMessage += "Business Error: MER COC disposition date must be populated if COC type = MER Denial~";
+                            hasError = true;
+                        }
+                        //BL_Coc021
+                        if (coc.CocType != "MER Denial" && !string.IsNullOrEmpty(coc.MerCocDispositionDate))
+                        {
+                            coc.ErrorMessage += "Business Error: MER COC disposition date must be blank if COC type <> MER Denial~";
+                            hasError = true;
+                        }
+                        //BL_Coc022
+                        if (coc.CocType == "MER Denial" && string.Compare(coc.MerCocDispositionDate, maxReceiveDate) >= 0)
+                        {
+                            coc.ErrorMessage += "Business Error: MER COC disposition date must be prior to current month~";
+                            hasError = true;
+                        }
+                        //BL_Coc023
+                        if (coc.CocType == "MER Denial" && coc.MerCocDispositionIndicator == "MER COC Not Met" && string.IsNullOrEmpty(coc.ReasonMerCocNotMetIndicator))
+                        {
+                            coc.ErrorMessage += "Business Error: Reason MER COC not met must be populated if COC type = MER Denial and MER COC disposition indicator = MER COC Not Met~";
+                            hasError = true;
+                        }
+                        //BL_Coc024
+                        if (coc.CocType != "MER Denial" && !string.IsNullOrEmpty(coc.ReasonMerCocNotMetIndicator))
+                        {
+                            coc.ErrorMessage += "Business Error: Reason MER COC not met must be blank if COC type <> MER Denial~";
+                            hasError = true;
+                        }
+                        //BL_Coc025
+                        if (coc.MerCocDispositionIndicator != "MER COC Not Met" && !string.IsNullOrEmpty(coc.ReasonMerCocNotMetIndicator))
+                        {
+                            coc.ErrorMessage += "Business Error: Reason MER COC not met must be blank if MER COC disposition indicator <> MER COC Not Met~";
+                            hasError = true;
+                        }
+                    }
+                    if (hasError)
+                    {
+                        if (coc.ErrorMessage.Length > 255) coc.ErrorMessage = coc.ErrorMessage.Substring(0, 255);
                         errorCocs.Add(coc);
+                    }
+                    else
+                    {
+                        validCocs.Add(coc);
                     }
                 }
 
@@ -166,16 +519,107 @@ namespace mcpdandpcpa.Controllers
                 List<Tuple<string, bool, string>> oonSchemas = JsonOperations.ValidateOON(allOons);
                 List<McpdOutOfNetwork> validOons = new List<McpdOutOfNetwork>();
                 List<McpdOutOfNetwork> errorOons = new List<McpdOutOfNetwork>();
+                List<string> dupOonIds = _context.McpdOutOfNetwork.GroupBy(x => x.OonId).Where(x => x.Count() > 1).Select(x => x.Key).ToList();
                 foreach (McpdOutOfNetwork oon in allOons)
                 {
-                    if (oonSchemas.First(x => x.Item1 == oon.OonId).Item2)
+                    bool hasError = false;
+                    oon.ErrorMessage = "";
+                    if (!oonSchemas.First(x => x.Item1 == oon.OonId).Item2)
                     {
-                        validOons.Add(oon);
+                        oon.ErrorMessage = "Schem Error: " + oonSchemas.First(x => x.Item1 == oon.OonId).Item3;
+                        hasError = true;
                     }
                     else
                     {
-                        oon.ErrorMessage = oonSchemas.First(x => x.Item1 == oon.OonId).Item3;
+                        //BL_Oon001
+                        if (dupOonIds.Contains(oon.OonId))
+                        {
+                            oon.ErrorMessage += "Business Error: Duplicated Oon id~";
+                            hasError = true;
+                        }
+                        //BL_Oon002
+                        if (oon.OonId.Substring(0, 3) != "305" && oon.OonId.Substring(0, 3) != "306")
+                        {
+                            oon.ErrorMessage += "Business Error: Oon id should start with plan code~";
+                            hasError = true;
+                        }
+                        //BL_Oon003
+                        if (string.Compare(oon.OonRequestReceivedDate, maxReceiveDate) >= 0)
+                        {
+                            oon.ErrorMessage += "Business Error: Receive date should be prior to current month~";
+                            hasError = true;
+                        }
+                        //BL_Oon004
+                        if (oon.RecordType == "Original" && !string.IsNullOrEmpty(oon.ParentOonId))
+                        {
+                            oon.ErrorMessage += "Business Error: Parent Oon id not allowed for Original~";
+                            hasError = true;
+                        }
+                        if (oon.RecordType != "Original")
+                        {
+                            if (string.IsNullOrEmpty(oon.ParentOonId))
+                            {
+                                oon.ErrorMessage += "Business Error: Parent Oon id is missing for non Original~";
+                                hasError = true;
+                            }
+                            else
+                            {
+                                var parentOon = _contextHistory.McpdOutOfNetwork.FirstOrDefault(x => x.OonId == oon.ParentOonId);
+                                if (parentOon == null)
+                                {
+                                    oon.ErrorMessage += "Business Error: Parent Oon id couldnot be found~";
+                                    hasError = true;
+                                }
+                                else
+                                {
+                                    var processedOon = _contextHistory.McpdOutOfNetwork.FirstOrDefault(x => x.ParentOonId == oon.ParentOonId);
+                                    if (processedOon != null)
+                                    {
+                                        oon.ErrorMessage += "Business Error: Already processed before, no more actions~";
+                                        hasError = true;
+                                    }
+                                }
+                            }
+                        }
+                        //BL_Oon005
+                        if (oon.OonResolutionStatusIndicator == "Partial Approval" && string.IsNullOrEmpty(oon.PartialApprovalExplanation))
+                        {
+                            oon.ErrorMessage += "Business Error: Partial Approval Explanation must be populated when OON Resolution Status Indicator = Partial Approval~";
+                            hasError = true;
+                        }
+                        //BL_Oon006
+                        if (oon.OonResolutionStatusIndicator == "Pending" && !string.IsNullOrEmpty(oon.OonRequestResolvedDate))
+                        {
+                            oon.ErrorMessage += "Business Error: OON Request Resolved Date must be blank if OON Resolution Status Indicator = Pending~";
+                            hasError = true;
+                        }
+                        //BL_Oon007
+                        if (oon.OonResolutionStatusIndicator != "Pending" && string.IsNullOrEmpty(oon.OonRequestResolvedDate))
+                        {
+                            oon.ErrorMessage += "Business Error: OON Request Resolved Date must be populated if OON Resolution Status Indicator <> Pending~";
+                            hasError = true;
+                        }
+                        //BL_Oon008
+                        if (oon.OonResolutionStatusIndicator != "Pending" && string.Compare(oon.OonRequestResolvedDate, maxReceiveDate) >= 0)
+                        {
+                            oon.ErrorMessage += "Business Error: OON Request Resolved Date is not a past date~";
+                            hasError = true;
+                        }
+                        //BL_Oon009
+                        if (oon.OonResolutionStatusIndicator != "Pending" && string.Compare(oon.OonRequestResolvedDate, oon.OonRequestReceivedDate) < 0)
+                        {
+                            oon.ErrorMessage += "Business Error: OON Request Resolved Date must be >= OON Request Received Date~";
+                            hasError = true;
+                        }
+                    }
+                    if (hasError)
+                    {
+                        if (oon.ErrorMessage.Length > 255) oon.ErrorMessage = oon.ErrorMessage.Substring(0, 255);
                         errorOons.Add(oon);
+                    }
+                    else
+                    {
+                        validOons.Add(oon);
                     }
                 }
 
@@ -487,7 +931,7 @@ namespace mcpdandpcpa.Controllers
                 log2.UpdateDate = DateTime.Now;
                 log2.UpdateBy = User.Identity.Name;
                 await _contextLog.SaveChangesAsync();
-                foreach (string IPA in model.TradingPartners)
+                foreach (string IPA in model.Ipas.Except(new List<string>() { "All" }))
                 {
                     ProcessLog log = await _contextLog.ProcessLogs.FirstOrDefaultAsync(x => x.TradingPartnerCode == IPA && x.RecordYear == model.mcpdHeader.ReportingPeriod.Substring(0, 4) && x.RecordMonth == model.mcpdHeader.ReportingPeriod.Substring(4, 2));
                     int countValidGrievance = validGrievances.Count(x => x.TradingPartnerCode == IPA);
@@ -701,7 +1145,7 @@ namespace mcpdandpcpa.Controllers
                 }
                 else
                 {
-                    foreach (string IPA in model.TradingPartners)
+                    foreach (string IPA in model.Ipas.Except(new List<string>() { "All" }))
                     {
                         processLog = await _contextLog.ProcessLogs.FirstOrDefaultAsync(x => x.TradingPartnerCode == IPA && x.RecordYear == model.PcpaHeader.ReportingPeriod.Substring(0, 4) && x.RecordMonth == model.PcpaHeader.ReportingPeriod.Substring(4, 2));
                         if (processLog == null)
@@ -740,6 +1184,7 @@ namespace mcpdandpcpa.Controllers
                     _contextError.PcpHeaders.Remove(headerError);
                     await _contextError.SaveChangesAsync();
                 }
+                var dupCins = _context.PcpAssignments.GroupBy(x => x.Cin).Where(x => x.Count() > 1).Select(x => x.Key).ToList();
                 List<PcpAssignment> validPcpas = new List<PcpAssignment>();
                 List<PcpAssignment> errorPcpas = new List<PcpAssignment>();
                 int totalPages = _context.PcpAssignments.Count() / 100000;
@@ -750,13 +1195,18 @@ namespace mcpdandpcpa.Controllers
                     List<Tuple<string, string, bool, string>> pcpaSchemas = JsonOperations.ValidatePcpa(currentPcpas);
                     foreach (PcpAssignment pcpa in currentPcpas)
                     {
-                        if (pcpaSchemas.First(x => x.Item1 == pcpa.Cin && x.Item2 == pcpa.Npi).Item3)
+                        if (dupCins.Contains(pcpa.Cin))
+                        {
+                            pcpa.ErrorMessage = "Business Error: Duplicated Cin";
+                            errorPcpas.Add(pcpa);
+                        }
+                        else if (pcpaSchemas.First(x => x.Item1 == pcpa.Cin && x.Item2 == pcpa.Npi).Item3)
                         {
                             validPcpas.Add(pcpa);
                         }
                         else
                         {
-                            pcpa.ErrorMessage = pcpaSchemas.First(x => x.Item1 == pcpa.Cin && x.Item2 == pcpa.Npi).Item4;
+                            pcpa.ErrorMessage = "Schema Error: " + pcpaSchemas.First(x => x.Item1 == pcpa.Cin && x.Item2 == pcpa.Npi).Item4;
                             errorPcpas.Add(pcpa);
                         }
                     }
@@ -825,7 +1275,7 @@ namespace mcpdandpcpa.Controllers
                     cin = x.Cin,
                     npi = x.Npi
                 }).ToList();
-                string fileName = "Pcpa_" + model.PcpaHeader.ReportingPeriod.Substring(0, 6) + ".json";
+                string fileName = "IEHP_PCPA_" + model.PcpaHeader.SubmissionDate + "_00001.json";
                 System.IO.File.WriteAllText(Path.Combine(model.JsonExportPath, fileName), JsonOperations.GetPcpaJson(jsonPcpa));
                 model.PcpaMessage = $"Json file {fileName} generation in {model.JsonExportPath} completed";
                 SubmissionLog log2 = await _contextLog.SubmissionLogs.FirstOrDefaultAsync(x => x.RecordYear == model.PcpaHeader.ReportingPeriod.Substring(0, 4) && x.RecordMonth == model.PcpaHeader.ReportingPeriod.Substring(4, 2) && x.FileType == "PCPA");
@@ -851,7 +1301,7 @@ namespace mcpdandpcpa.Controllers
                 log2.UpdateDate = DateTime.Now;
                 log2.UpdateBy = User.Identity.Name;
                 await _contextLog.SaveChangesAsync();
-                foreach (string IPA in model.TradingPartners)
+                foreach (string IPA in model.Ipas.Except(new List<string>() { "All" }))
                 {
                     ProcessLog log = await _contextLog.ProcessLogs.FirstOrDefaultAsync(x => x.TradingPartnerCode == IPA && x.RecordYear == model.PcpaHeader.ReportingPeriod.Substring(0, 4) && x.RecordMonth == model.PcpaHeader.ReportingPeriod.Substring(4, 2));
                     int countValid = validPcpas.Count(x => x.TradingPartnerCode == IPA);
@@ -1018,6 +1468,12 @@ namespace mcpdandpcpa.Controllers
                 }
 
             }
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult McpdJson(int? id, McpdViewModel model)
+        {
+            //this is for test only
             return View(model);
         }
     }

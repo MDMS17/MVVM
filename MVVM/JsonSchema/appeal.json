@@ -90,7 +90,6 @@
     "appealId",
     "recordType",
     "appealReceivedDate",
-    "noticeOfActionDate",
     "appealType",
     "benefitType",
     "appealResolutionStatusIndicator",

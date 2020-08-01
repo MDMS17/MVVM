@@ -24,50 +24,53 @@
                 RunTime
             </th>
             <th>
-                PCPATotal
+                Numbers
             </th>
-            <th>
-                PCPASubmits
-            </th>
-            <th>
-                PCPAErrors
-            </th>
-            <th>
-                GrievanceTotal
-            </th>
-            <th>
-                GrievanceSubmits
-            </th>
-            <th>
-                GrievanceErrors
-            </th>
-            <th>
-                AppealTotal
-            </th>
-            <th>
-                AppealSubmits
-            </th>
-            <th>
-                AppealErrors
-            </th>
-            <th>
-                COCTotal
-            </th>
-            <th>
-                COCSubmits
-            </th>
-            <th>
-                COCErrors
-            </th>
-            <th>
-                OONTotal
-            </th>
-            <th>
-                OONSubmits
-            </th>
-            <th>
-                OONErrors
-            </th>
+            @*<th style="display:none;">
+                    PCPATotal
+                </th>
+                <th style="display:none;">
+                    PCPASubmits
+                </th>
+                <th style="display:none;">
+                    PCPAErrors
+                </th>
+                <th style="display:none;">
+                    GrievanceTotal
+                </th>
+                <th style="display:none;">
+                    GrievanceSubmits
+                </th>
+                <th style="display:none;">
+                    GrievanceErrors
+                </th>
+                <th style="display:none;">
+                    AppealTotal
+                </th>
+                <th style="display:none;">
+                    AppealSubmits
+                </th>
+                <th style="display:none;">
+                    AppealErrors
+                </th>
+                <th style="display:none;">
+                    COCTotal
+                </th>
+                <th style="display:none;">
+                    COCSubmits
+                </th>
+                <th style="display:none;">
+                    COCErrors
+                </th>
+                <th style="display:none;">
+                    OONTotal
+                </th>
+                <th style="display:none;">
+                    OONSubmits
+                </th>
+                <th style="display:none;">
+                    OONErrors
+                </th>*@
         </tr>
     </thead>
     <tbody>
@@ -98,53 +101,54 @@
                     @item.RunTime.ToString("MMdd HH:mm")
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PCPATotal)
+                    <a href="#" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-html="true" data-content="PcpaTotal:@item.PCPATotal<br/>PCPASubmits:@item.PCPASubmits<br/>PCPAErrors:@item.PCPAErrors<br/>GrievanceTotal:@item.GrievanceTotal<br/>GrievanceSubmits:@item.GrievanceSubmits<br/>GrievanceErrors:@item.GrievanceErrors<br/>AppealTotal:@item.AppealTotal<br/>AppealSubmits:@item.AppealSubmits<br/>AppealErrors:@item.AppealErrors<br/>CocTotal:@item.COCTotal<br/>CocSubmits:@item.COCSubmits<br/>CocErrors:@item.COCErrors<br/>OonTotal:@item.OONTotal<br/>OonSubmits:@item.OONSubmits<br/>OonErrors:@item.OONErrors">Numbers...</a>
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PCPASubmits)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PCPAErrors)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.GrievanceTotal)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.GrievanceSubmits)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.GrievanceErrors)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AppealTotal)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AppealSubmits)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AppealErrors)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.COCTotal)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.COCSubmits)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.COCErrors)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OONTotal)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OONSubmits)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OONErrors)
-                </td>
+                @*<td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.PCPATotal)
+                    </td>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.PCPASubmits)
+                    </td>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.PCPAErrors)
+                    </td>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.GrievanceTotal)
+                    </td>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.GrievanceSubmits)
+                    </td>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.GrievanceErrors)
+                    </td>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.AppealTotal)
+                    </td>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.AppealSubmits)
+                    </td>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.AppealErrors)
+                    </td>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.COCTotal)
+                    </td>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.COCSubmits)
+                    </td>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.COCErrors)
+                    </td>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.OONTotal)
+                    </td>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.OONSubmits)
+                    </td>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.OONErrors)
+                    </td>*@
             </tr>
         }
     </tbody>
 </table>
-
-

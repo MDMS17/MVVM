@@ -68,10 +68,58 @@ namespace MCPDIP.Test
         [TestMethod]
         public void TestCocApi()
         {
+            TestJsonCoc result = null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = httpClient.GetAsync("http://localhost/MCPDIP.Api/api/Coc/1"))
+                {
+                    var apiResponse = response.Result.Content.ReadAsStringAsync();
+                    result = JsonDeserialize.DeserializeCoc(apiResponse.Result);
+                }
+            }
+            Assert.IsTrue(result != null);
+        }
+        [TestMethod]
+        public void TestListOfCocApi()
+        {
+            List<TestJsonCoc> result = null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = httpClient.GetAsync("http://localhost/MCPDIP.Api/api/Coc/2020/02/IEHP"))
+                {
+                    var apiResponse = response.Result.Content.ReadAsStringAsync();
+                    result = JsonDeserialize.DeserializeListOfCoc(apiResponse.Result);
+                }
+            }
+            Assert.IsTrue(result.Count > 0);
         }
         [TestMethod]
         public void TestOonApi()
         {
+            TestJsonOon result = null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = httpClient.GetAsync("http://localhost/MCPDIP.Api/api/Oon/1"))
+                {
+                    var apiResponse = response.Result.Content.ReadAsStringAsync();
+                    result = JsonDeserialize.DeserializeOon(apiResponse.Result);
+                }
+            }
+            Assert.IsTrue(result != null);
+        }
+        [TestMethod]
+        public void TestListOfOonApi()
+        {
+            List<TestJsonOon> result = null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = httpClient.GetAsync("http://localhost/MCPDIP.Api/api/Oon/2020/02/IEHP"))
+                {
+                    var apiResponse = response.Result.Content.ReadAsStringAsync();
+                    result = JsonDeserialize.DeserializeListOfOon(apiResponse.Result);
+                }
+            }
+            Assert.IsTrue(result.Count > 0);
         }
         [TestMethod]
         public void TestPcpaApi()

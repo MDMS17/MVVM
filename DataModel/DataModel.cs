@@ -88,6 +88,11 @@ namespace mcpdipData
         public DateTime SubmissionDate { get; set; }
         public string SchemaVersion { get; set; }
         public string ReportingPeriod { get; set; }
+        public bool? GrievanceProcessing { get; set; }
+        public bool? AppealProcessing { get; set; }
+        public bool? CocProcessing { get; set; }
+        public bool? OonProcessing { get; set; }
+        public bool? JsonProcessing { get; set; }
     }
 
     public class McpdOutOfNetwork : HasAttributes
@@ -141,6 +146,7 @@ namespace mcpdipData
         public string SubmissionType { get; set; }
         public string SubmissionVersion { get; set; }
         public string SchemaVersion { get; set; }
+        public bool? IEHPProcessing { get; set; }
+        public bool? JsonProcessing { get; set; }
     }
 }
-

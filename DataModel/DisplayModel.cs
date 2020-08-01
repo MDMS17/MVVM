@@ -71,9 +71,9 @@ namespace mcpdipData
         public string SubmissionDate { get; set; }
         public string ValidationStatus { get; set; }
         public string Levels { get; set; }
-        public string ResponseHierarchy { get; set; }
         public string SchemaVersion { get; set; }
         public string RecordYear { get; set; }
         public string RecordMonth { get; set; }
     }
 }
+

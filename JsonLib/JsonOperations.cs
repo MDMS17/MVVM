@@ -103,7 +103,7 @@ namespace JsonLib
         {
             return JsonConvert.SerializeObject(
                 Cocs,
-               Formatting.Indented,
+                Formatting.Indented,
                 new JsonSerializerSettings
                 {
                     NullValueHandling = NullValueHandling.Ignore
@@ -309,4 +309,3 @@ namespace JsonLib
         }
     }
 }
-

@@ -1,0 +1,34 @@
+﻿@model mcpdandpcpa.Models.ResponseViewModel
+@{
+    ViewData["Title"] = "Load Response Files";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h1>Load Response files</h1>
+    <form asp-action="LoadResponse">
+        <p>
+            <label>File Path:</label>
+            <input asp-for="FilePath" type="text" size="60" />
+            <input type="submit" value="Change" asp-action="ChangeResponseFilePath" class="btn btn-primary" />
+        </p>
+        <table style="width:100%;border:1px solid">
+            @foreach (var item in Model.SelectedFiles)
+            {
+                <tr>
+                    <td>@item</td>
+                </tr>
+            }
+        </table>
+        <p>
+            <label>Archive Path:</label>
+            <input asp-for="ArchivePath" type="text" size="60" />
+            <input type="submit" value="Change" asp-action="ChangeResponseArchivePath" class="btn btn-primary" />
+        </p>
+        <p>
+            <input type="submit" value="Load Response Files" class="btn btn-primary" />
+        </p>
+        <label>@Model.Message</label>
+    </form>
+
+</div>

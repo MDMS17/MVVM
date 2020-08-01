@@ -89,4 +89,4 @@ function SelectAllToggle(obj) {
     }
 }
 
-
+$('[data-toggle="popover"]').popover();
