@@ -10,7 +10,7 @@ namespace mcpdandpcpa.Models
         public static List<string> DropdownYear { get; set; } = new List<string> { DateTime.Today.Year.ToString(), (DateTime.Today.Year - 1).ToString(), (DateTime.Today.Year - 2).ToString(), (DateTime.Today.Year - 3).ToString() };
         public static List<string> DropdownMonth { get; set; } = new List<string> { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
         public static List<string> TradingPartners { get; set; } = new List<string> { "All", "IEHP", "Kaiser" };
-        public static List<string> DropdownExport { get; set; } = new List<string> { ".csv", "json" };
+        public static List<string> DropdownExport { get; set; } = new List<string> { ".csv", "json", "xlsx" };
         public static List<string> DropdownPlanCodes { get; set; } = new List<string> { "All", "305", "306" };
         public static List<string> GrievanceCascadeDropdown { get; set; } = new List<string> { "", "CIN", "RecordType", "GrievanceType", "BenefitType", "ExemptIndicator", "DataSource", "ReceiveDate", "GrievanceId", "ParentId" };
         public static List<string> AppealCascadeDropdown { get; set; } = new List<string> { "", "CIN", "AppealId", "RecordType", "ParentGrievanceId", "ParentId", "ReceiveDate", "ActionDate", "AppealType", "BenefitType", "StatusIndicator", "ResolutionDate", "OverturnIndicator", "ExpediteIndicator", "DataSource" };
@@ -26,7 +26,7 @@ namespace mcpdandpcpa.Models
         public static List<string> TestCin306 { get; set; } = new List<string> { "32001388A", "32001389A", "32001390A", "32001391A", "32001392A", "32001393A", "32001394A", "32001395A", "32001396A", "32001397A" };
         public static List<string> TestCocMer305 { get; set; } = new List<string> { "292092", "292093", "292094", "292095", "292096", "292097", "292098", "292099", "292100", "292101" };
         public static List<string> TestCocMer306 { get; set; } = new List<string> { "293093", "293094", "293095", "293096", "293097", "293098", "293099", "293100", "293101", "293102" };
+        public static List<string> DropdownItems { get; set; } = new List<string> { "All", "Appeals", "ContinuityOfCare", "Grievances", "OutOfNetwork", "PCPA" };
+        public static List<string> DropdownSeverity = new List<string> { "All", "Error", "Warning" };
     }
 }
-
-

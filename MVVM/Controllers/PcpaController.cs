@@ -10,6 +10,7 @@ using mcpdipData;
 using System.IO;
 using mcpdandpcpa.Extensions;
 using JsonLib;
+using ClosedXML.Excel;
 
 namespace mcpdandpcpa.Controllers
 {
@@ -933,7 +934,7 @@ namespace mcpdandpcpa.Controllers
                 byte[] buffer = System.Text.Encoding.ASCII.GetBytes(sb.ToString());
                 return File(buffer, "text/csv", pcpaType + DateTime.Today.ToString("yyyyMMdd") + ".csv");
             }
-            else
+            else if(exportType=="json")
             {
                 PcpHeader pcpHeader = _context.PcpHeaders.Find(PcpaAssignments[0].PcpHeaderId);
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
@@ -944,6 +945,20 @@ namespace mcpdandpcpa.Controllers
                 sb.Append("}");
                 byte[] buffer = System.Text.Encoding.ASCII.GetBytes(sb.ToString());
                 return File(buffer, "text/json", pcpaType + DateTime.Today.ToString("yyyyMMdd") + ".json");
+            }
+            else
+            {
+                string fileName = pcpaType + DateTime.Today.ToString("yyyyMMdd") + ".xlsx";
+                using (XLWorkbook wb = new XLWorkbook())
+                {
+                    wb.Worksheets.Add(PcpaAssignments.ToDataTable());
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        wb.SaveAs(stream);
+                        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                    }
+                }
+
             }
         }
         // GET: Pcpa/Details/5

@@ -973,6 +973,7 @@ CREATE TABLE [Response].[McpdipDetail](
                 [OriginalHeaderId] [bigint] NULL,
                 [OriginalCin] [varchar](50) NULL,
                 [OriginalItemId] [varchar](50) NULL,
+                [OriginalDataSource] [VARCHAR](50) NULL,
 CONSTRAINT [PK_McpdipDetail] PRIMARY KEY CLUSTERED 
 (
                 [DetailId] ASC
@@ -1064,3 +1065,4 @@ CONSTRAINT [PK_OperationLog] PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+

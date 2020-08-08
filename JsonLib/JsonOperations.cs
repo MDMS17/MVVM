@@ -119,6 +119,16 @@ namespace JsonLib
                     NullValueHandling = NullValueHandling.Ignore
                 });
         }
+        public static string GetResponseDetailJson(List<McpdipDetail> Details)
+        {
+            return JsonConvert.SerializeObject(
+                Details,
+                Formatting.Indented,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+        }
         public static bool ValidateMcpd(string jsonString, out IList<string> messages)
         {
             var McpdSchemaFile = System.IO.File.ReadAllText("JsonSchema\\mcpd.json");
@@ -309,3 +319,4 @@ namespace JsonLib
         }
     }
 }
+

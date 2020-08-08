@@ -1,0 +1,128 @@
+﻿@model mcpdandpcpa.Models.ResponseViewModel
+@{
+    ViewData["Title"] = "View Response Errors";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>View Response Error</h1>
+<form asp-action="ViewError">
+    <table style="width:100%;">
+        <tr>
+            <td>
+                <label>Year:</label>
+                <select asp-for="SelectedYear" asp-items="@Model.DropdownYear"></select>
+            </td>
+            <td>
+                <label>Month:</label>
+                <select asp-for="SelectedMonth" asp-items="@Model.DropdownMonth"></select>
+            </td>
+            <td>
+                <input type="submit" value="Refresh" asp-route-id="1" class="btn btn-primary" />
+            </td>
+            <td rowspan="2">
+                <select asp-for="SelectedExport" asp-items="@Model.DropdownExport"></select>
+                <input type="submit" value="Download" asp-route-id="4" asp-action="DownloadData" class="btn btn-primary" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Item:</label>
+                <select asp-for="SelectedItem" asp-items="@Model.DropdownItems"></select>
+            </td>
+            <td>
+                <label>Severity:</label>
+                <select asp-for="SelectedSeverity" asp-items="@Model.DropdownSeverity"></select>
+            </td>
+            <td>
+                <label>Data Source:</label>
+                <input type="text" asp-for="SelectedDataSource" />
+            </td>
+        </tr>
+    </table>
+    <table class="table" style="white-space:nowrap">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>ErrorId</th>
+                <th>Description</th>
+                <th>Severity</th>
+                <th>CIN</th>
+                <th>ItemId</th>
+                <th>DataSource</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ResponseDetails)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Item)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ErrorId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Severity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cin)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataSource)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <table>
+        <tr>
+            @if (Model.currentFirstDisabled)
+            {
+                <td><input type="submit" class="page-link" asp-route-id="101" value="First" disabled="disabled" /></td>
+            }
+            else
+            {
+                <td><input type="submit" class="page-link" asp-route-id="101" value="First" /></td>
+            }
+            @if (Model.currentPreviousDisabled)
+            {
+                <td><input type="submit" class="page-link" asp-route-id="102" value="Previous" disabled="disabled" /></td>
+            }
+            else
+            {
+                <td><input type="submit" class="page-link" asp-route-id="102" value="Previous" /></td>
+            }
+            <td><input asp-for="PageCurrent" class="form-control" size="6" readonly="readonly" /></td>
+            @if (Model.currentNextDisabled)
+            {
+                <td><input type="submit" class="page-link" asp-route-id="103" value="Next" disabled="disabled" /></td>
+            }
+            else
+            {
+                <td><input type="submit" class="page-link" asp-route-id="103" value="Next" /></td>
+            }
+            @if (Model.currentLastDisabled)
+            {
+                <td><input type="submit" class="page-link" asp-route-id="104" value="Last" disabled="disabled" /></td>
+            }
+            else
+            {
+                <td><input type="submit" class="page-link" asp-route-id="104" value="Last" /></td>
+            }
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td><input asp-for="tbPageCurrent" class="form-control" size="6" id="clientAppealPageCurrent" /></td>
+            <td>&nbsp;Of&nbsp;</td>
+            <td><input asp-for="PageCurrentTotal" class="form-control" size="6" readonly="readonly" id="clientAppealPageCurrentTotal" /></td>
+            <td><input type="submit" class="page-link" asp-route-id="105" value="Goto Page" onclick="return GotoPageClientClick('clientAppealPageCurrent','clientAppealPageCurrentTotal');" /></td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td><select asp-for="PageSizeCurrent" asp-items="@Model.PageSizeDropdown"></select></td>
+            <td><input type="submit" class="page-link" asp-route-id="106" value="Change Page Size" /></td>
+        </tr>
+    </table>
+</form>

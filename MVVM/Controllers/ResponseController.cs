@@ -547,6 +547,277 @@ namespace mcpdandpcpa.Controllers
             //this is for test only
             return View(model);
         }
+        public async Task<IActionResult> ViewError()
+        {
+            ResponseViewModel model = new ResponseViewModel();
+            McpdipHeader responseHeader = _context.McpdipHeaders.OrderByDescending(x => x.HeaderId).FirstOrDefault();
+            if (responseHeader != null)
+            {
+                model.SelectedYear = responseHeader.RecordYear;
+                model.SelectedMonth = responseHeader.RecordMonth;
+                model.SelectedItem = "All";
+                model.SelectedSeverity = "All";
+                model.PageCurrent = "1";
+                model.tbPageCurrent = "1";
+                model.currentFirstDisabled = true;
+                model.currentPreviousDisabled = true;
+                model.currentNextDisabled = false;
+                model.currentLastDisabled = false;
+                model.ResponseDetails = await GetItemDetails(model, 20, 0);
+                model.PageCurrentTotal = await GetResponsePageTotal(model, 20, 0);
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ViewError(long? id, ResponseViewModel model)
+        {
+            if (id == 103)
+            {
+                //current next
+                if (model.PageSizeCurrent != GlobalViewModel.PageSizeCurrent)
+                {
+                    model = await PageSizeChangeCurrent(model);
+                }
+                else
+                {
+                    int pageCurrent = int.Parse(model.PageCurrent);
+                    int pageSizeCurrent = int.Parse(model.PageSizeCurrent);
+                    model.ResponseDetails = await GetItemDetails(model, pageSizeCurrent, pageCurrent);
+                    ModelState["PageCurrent"].RawValue = (pageCurrent + 1).ToString();
+                    ModelState["tbPageCurrent"].RawValue = (pageCurrent + 1).ToString();
+                    if (pageCurrent > 0)
+                    {
+                        model.currentFirstDisabled = false;
+                        model.currentPreviousDisabled = false;
+                        model.currentNextDisabled = false;
+                        model.currentLastDisabled = false;
+                    }
+                    if (pageCurrent == int.Parse(model.PageCurrentTotal) - 1)
+                    {
+                        model.currentNextDisabled = true;
+                        model.currentLastDisabled = true;
+                    }
+                }
+            }
+            else if (id == 104)
+            {
+                //current last
+                if (model.PageSizeCurrent != GlobalViewModel.PageSizeCurrent)
+                {
+                    model = await PageSizeChangeCurrent(model);
+                }
+                else
+                {
+                    int pageCurrent = int.Parse(model.PageCurrentTotal) - 1;
+                    int pageSizeCurrent = int.Parse(model.PageSizeCurrent);
+                    model.ResponseDetails = await GetItemDetails(model, pageSizeCurrent, pageCurrent);
+                    ModelState["PageCurrent"].RawValue = (pageCurrent + 1).ToString();
+                    ModelState["tbPageCurrent"].RawValue = (pageCurrent + 1).ToString();
+                    model.currentFirstDisabled = false;
+                    model.currentPreviousDisabled = false;
+                    model.currentNextDisabled = true;
+                    model.currentLastDisabled = true;
+                }
+            }
+            else if (id == 105)
+            {
+                //current goto
+                if (model.PageSizeCurrent != GlobalViewModel.PageSizeCurrent)
+                {
+                    model = await PageSizeChangeCurrent(model);
+                }
+                else
+                {
+                    int pageCurrent = int.Parse(model.tbPageCurrent) - 1;
+                    int pageSizeCurrent = int.Parse(model.PageSizeCurrent);
+                    model.ResponseDetails = await GetItemDetails(model, pageSizeCurrent, pageCurrent);
+                    ModelState["PageCurrent"].RawValue = (pageCurrent + 1).ToString();
+                    ModelState["tbPageCurrent"].RawValue = (pageCurrent + 1).ToString();
+                    if (pageCurrent == 0)
+                    {
+                        model.currentFirstDisabled = true;
+                        model.currentPreviousDisabled = true;
+                        model.currentNextDisabled = false;
+                        model.currentLastDisabled = false;
+                    }
+                    else if (pageCurrent == int.Parse(model.PageCurrentTotal) - 1)
+                    {
+                        model.currentFirstDisabled = false;
+                        model.currentPreviousDisabled = false;
+                        model.currentNextDisabled = true;
+                        model.currentLastDisabled = true;
+                    }
+                    else
+                    {
+                        model.currentFirstDisabled = false;
+                        model.currentPreviousDisabled = false;
+                        model.currentNextDisabled = false;
+                        model.currentLastDisabled = false;
+                    }
+                }
+            }
+            else if (id == 102)
+            {
+                //current previous
+                if (model.PageSizeCurrent != GlobalViewModel.PageSizeCurrent)
+                {
+                    model = await PageSizeChangeCurrent(model);
+                }
+                else
+                {
+                    int pageCurrent = int.Parse(model.PageCurrent) - 2;
+                    int pageSizeCurrent = int.Parse(model.PageSizeCurrent);
+                    model.ResponseDetails = await GetItemDetails(model, pageSizeCurrent, pageCurrent);
+                    ModelState["PageCurrent"].RawValue = (pageCurrent + 1).ToString();
+                    ModelState["tbPageCurrent"].RawValue = (pageCurrent + 1).ToString();
+                    if (pageCurrent < int.Parse(model.PageCurrentTotal) - 1)
+                    {
+                        model.currentFirstDisabled = false;
+                        model.currentPreviousDisabled = false;
+                        model.currentNextDisabled = false;
+                        model.currentLastDisabled = false;
+                    }
+                    if (pageCurrent == 0)
+                    {
+                        model.currentFirstDisabled = true;
+                        model.currentPreviousDisabled = true;
+                    }
+                }
+            }
+            else if (id == 101)
+            {
+                //current first
+                if (model.PageSizeCurrent != GlobalViewModel.PageSizeCurrent)
+                {
+                    model = await PageSizeChangeCurrent(model);
+                }
+                else
+                {
+                    int pageCurrent = 0;
+                    int pageSizeCurrent = int.Parse(model.PageSizeCurrent);
+                    model.ResponseDetails = await GetItemDetails(model, pageSizeCurrent, pageCurrent);
+                    ModelState["PageCurrent"].RawValue = (pageCurrent + 1).ToString();
+                    ModelState["tbPageCurrent"].RawValue = (pageCurrent + 1).ToString();
+                    model.currentFirstDisabled = true;
+                    model.currentPreviousDisabled = true;
+                    model.currentNextDisabled = false;
+                    model.currentLastDisabled = false;
+                }
+            }
+            else if (id == 1)
+            {
+                //current refresh
+                model = await PageSizeChangeCurrent(model);
+            }
+            else if (id == 106)
+            {
+                //current page size change
+                if (model.PageSizeCurrent != GlobalViewModel.PageSizeCurrent)
+                {
+                    model = await PageSizeChangeCurrent(model);
+                }
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> DownloadData(long? id, ResponseViewModel model)
+        {
+            List<McpdipDetail> Details = new List<McpdipDetail>();
+            string ItemType = "ResponseError";
+            string exportType = "";
+            Details = await GetErrorsForDownload(model);
+            exportType = model.SelectedExport;
+            if (exportType == ".csv")
+            {
+                var columnHeader = new string[] { "DetailId", "ResponseTarget", "ChildrenId", "ItemReference", "Id", "Description", "Severity", "OriginalTable", "OriginalId", "OriginalHeaderId", "OriginalCin", "OriginalItemId", "OriginalDataSource" };
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                sb.AppendLine(string.Join(",", columnHeader));
+                Details.ForEach(x => sb.AppendLine($"{x.DetailId.ToString()},{x.ResponseTarget },{x.ChildrenId.ToString() },{x.ItemReference},{x.Id},{x.Description},{x.Severity},{x.OriginalTable},{x.OriginalId.ToString()},{x.OriginalHeaderId.ToString()},{x.OriginalCin},{x.OriginalItemId},{x.OriginalDataSource}"));
+                byte[] buffer = System.Text.Encoding.ASCII.GetBytes(sb.ToString());
+                return File(buffer, "text/csv", ItemType + DateTime.Today.ToString("yyyyMMdd") + ".csv");
+            }
+            else if (exportType == "json")
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                sb.Append($"\"{ItemType}\":");
+                sb.Append(JsonOperations.GetResponseDetailJson(Details));
+                byte[] buffer = System.Text.Encoding.ASCII.GetBytes(sb.ToString());
+                return File(buffer, "text/json", ItemType + DateTime.Today.ToString("yyyyMMdd") + ".json");
+            }
+            else
+            {
+                string fileName = ItemType + DateTime.Today.ToString("yyyyMMdd") + ".xlsx";
+                using (XLWorkbook wb = new XLWorkbook())
+                {
+                    wb.Worksheets.Add(Details.ToDataTable());
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        wb.SaveAs(stream);
+                        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                    }
+                }
+            }
+        }
+        private async Task<List<ItemDetail>> GetItemDetails(ResponseViewModel model, int PageSize, int PageNumber)
+        {
+            List<long> responseHeaderIds = await _context.McpdipHeaders.Where(x => x.RecordMonth == model.SelectedMonth && x.RecordYear == model.SelectedYear).Select(x => (long)x.HeaderId).ToListAsync();
+            List<long> responseHierarchyIds = await _context.McpdipHierarchies.Where(x => responseHeaderIds.Contains(x.HeaderId)).Select(x => x.HierarchyId).ToListAsync();
+            List<long> responseChildrenIds = await _context.McpdipChildrens.Where(x => responseHierarchyIds.Contains(x.HierarchyId)).Select(x => x.ChildrenId).ToListAsync();
+            var result = _context.McpdipDetails.Where(x => responseChildrenIds.Contains(x.ChildrenId)).FilterByItem(model.SelectedItem).FilterBySeverity(model.SelectedSeverity).filterByResponseDataSource(model.SelectedDataSource).Skip(PageSize * PageNumber).Take(PageSize).Select(x => new ItemDetail
+            {
+                Item = x.ResponseTarget,
+                ErrorId = x.Id,
+                Description = x.Description,
+                Severity = x.Severity,
+                Cin = x.OriginalCin,
+                ItemId = x.OriginalItemId,
+                DataSource = x.OriginalDataSource
+            });
+            return await Task.FromResult(result.ToList());
+        }
+        private async Task<string> GetResponsePageTotal(ResponseViewModel model, int PageSize, int PageNumber)
+        {
+            List<long> responseHeaderIds = await _context.McpdipHeaders.Where(x => x.RecordMonth == model.SelectedMonth && x.RecordYear == model.SelectedYear).Select(x => (long)x.HeaderId).ToListAsync();
+            List<long> responseHierarchyIds = await _context.McpdipHierarchies.Where(x => responseHeaderIds.Contains(x.HeaderId)).Select(x => x.HierarchyId).ToListAsync();
+            List<long> responseChildrenIds = await _context.McpdipChildrens.Where(x => responseHierarchyIds.Contains(x.HierarchyId)).Select(x => x.ChildrenId).ToListAsync();
+
+            string result = Math.Ceiling((decimal)_context.McpdipDetails.Where(x => responseChildrenIds.Contains(x.ChildrenId)).FilterByItem(model.SelectedItem).FilterBySeverity(model.SelectedSeverity).filterByResponseDataSource(model.SelectedDataSource)
+                .Count() / PageSize).ToString();
+            return await Task.FromResult(result);
+        }
+        private async Task<List<McpdipDetail>> GetErrorsForDownload(ResponseViewModel model)
+        {
+            List<long> responseHeaderIds = await _context.McpdipHeaders.Where(x => x.RecordMonth == model.SelectedMonth && x.RecordYear == model.SelectedYear).Select(x => (long)x.HeaderId).ToListAsync();
+            List<long> responseHierarchyIds = await _context.McpdipHierarchies.Where(x => responseHeaderIds.Contains(x.HeaderId)).Select(x => x.HierarchyId).ToListAsync();
+            List<long> responseChildrenIds = await _context.McpdipChildrens.Where(x => responseHierarchyIds.Contains(x.HierarchyId)).Select(x => x.ChildrenId).ToListAsync();
+            var result = _context.McpdipDetails.Where(x => responseChildrenIds.Contains(x.ChildrenId)).FilterByItem(model.SelectedItem).FilterBySeverity(model.SelectedSeverity).filterByResponseDataSource(model.SelectedDataSource);
+            return await Task.FromResult(result.ToList());
+        }
+        private async Task<ResponseViewModel> PageSizeChangeCurrent(ResponseViewModel model)
+        {
+            int pageSizeCurrent = int.Parse(model.PageSizeCurrent);
+            model.ResponseDetails = await GetItemDetails(model, pageSizeCurrent, 0);
+            model.PageCurrent = "1";
+            model.PageCurrentTotal = await GetResponsePageTotal(model, pageSizeCurrent, 0);
+            model.tbPageCurrent = "1";
+            ModelState["PageCurrent"].RawValue = "1";
+            ModelState["tbPageCurrent"].RawValue = "1";
+            ModelState["PageCurrentTotal"].RawValue = model.PageCurrentTotal;
+            model.currentFirstDisabled = true;
+            model.currentPreviousDisabled = true;
+            if (int.Parse(model.PageCurrentTotal) > 1)
+            {
+                model.currentNextDisabled = false;
+                model.currentLastDisabled = false;
+            }
+            else
+            {
+                model.currentNextDisabled = true;
+                model.currentLastDisabled = true;
+            }
+            GlobalViewModel.PageSizeCurrent = model.PageSizeCurrent;
+            return model;
+        }
     }
 }
 

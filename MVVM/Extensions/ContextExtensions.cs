@@ -286,6 +286,21 @@ namespace mcpdandpcpa.Extensions
             if (string.IsNullOrEmpty(AddressCountry)) return Records;
             else return Records.Where(x => x.ServiceLocationCountry == AddressCountry);
         }
+        public static IEnumerable<McpdipDetail> FilterByItem(this IEnumerable<McpdipDetail> Records, string Item)
+        {
+            if (Item == "All") return Records;
+            else return Records.Where(x => x.ResponseTarget == Item);
+        }
+        public static IEnumerable<McpdipDetail> FilterBySeverity(this IEnumerable<McpdipDetail> Records, string Severity)
+        {
+            if (Severity == "All") return Records;
+            else return Records.Where(x => x.Severity == Severity);
+        }
+        public static IEnumerable<McpdipDetail> filterByResponseDataSource(this IEnumerable<McpdipDetail> Records, string DataSource)
+        {
+            if (string.IsNullOrEmpty(DataSource)) return Records;
+            else return Records.Where(x => x.OriginalDataSource == DataSource);
+        }
         public static IEnumerable<T> PrepareDisplay<T>(this IEnumerable<T> Records) where T : HasYearMonth
         {
             string loopYear = "";

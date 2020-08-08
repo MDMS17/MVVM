@@ -8,6 +8,9 @@ using mcpdandpcpa.Models;
 using mcpdipData;
 using mcpdandpcpa.Extensions;
 using JsonLib;
+using ClosedXML.Excel;
+using System.IO;
+using MCPDIP.Web.Extensions;
 
 namespace mcpdandpcpa.Controllers
 {
@@ -1327,7 +1330,7 @@ namespace mcpdandpcpa.Controllers
                 byte[] buffer = System.Text.Encoding.ASCII.GetBytes(sb.ToString());
                 return File(buffer, "text/csv", AppealType + DateTime.Today.ToString("yyyyMMdd") + ".csv");
             }
-            else
+            else if (exportType == "json")
             {
                 McpdHeader mcpdHeader = _context.McpdHeaders.Find(Appeals[0].McpdHeaderId);
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
@@ -1338,6 +1341,19 @@ namespace mcpdandpcpa.Controllers
                 sb.Append("}");
                 byte[] buffer = System.Text.Encoding.ASCII.GetBytes(sb.ToString());
                 return File(buffer, "text/json", AppealType + DateTime.Today.ToString("yyyyMMdd") + ".json");
+            }
+            else
+            {
+                string fileName = AppealType + DateTime.Today.ToString("yyyyMMdd") + ".xlsx";
+                using (XLWorkbook wb = new XLWorkbook())
+                {
+                    wb.Worksheets.Add(Appeals.ToDataTable());
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        wb.SaveAs(stream);
+                        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                    }
+                }
             }
         }
         // GET: Appeal/Details/5

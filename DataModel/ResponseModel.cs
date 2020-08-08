@@ -53,6 +53,7 @@ namespace mcpdipData
         public long? OriginalHeaderId { get; set; }
         public string OriginalCin { get; set; }
         public string OriginalItemId { get; set; }
+        public string OriginalDataSource { get; set; }
     }
 
     public class ResponseFile
@@ -86,5 +87,14 @@ namespace mcpdipData
         public string sectionIdentifier { get; set; }
         public List<ResponseDetail> responses { get; set; }
     }
+    public class ItemDetail
+    {
+        public string Item { get; set; }
+        public string ErrorId { get; set; }
+        public string Description { get; set; }
+        public string Severity { get; set; }
+        public string Cin { get; set; }
+        public string ItemId { get; set; }
+        public string DataSource { get; set; }
+    }
 }
-

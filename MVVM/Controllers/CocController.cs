@@ -8,6 +8,8 @@ using mcpdandpcpa.Models;
 using mcpdipData;
 using mcpdandpcpa.Extensions;
 using JsonLib;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace mcpdandpcpa.Controllers
 {
@@ -1462,7 +1464,7 @@ namespace mcpdandpcpa.Controllers
                 byte[] buffer = System.Text.Encoding.ASCII.GetBytes(sb.ToString());
                 return File(buffer, "text/csv", CocType + DateTime.Today.ToString("yyyyMMdd") + ".csv");
             }
-            else
+            else if(exportType=="json")
             {
                 McpdHeader mcpdHeader = _context.McpdHeaders.Find(Cocs[0].McpdHeaderId);
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
@@ -1473,6 +1475,19 @@ namespace mcpdandpcpa.Controllers
                 sb.Append("}");
                 byte[] buffer = System.Text.Encoding.ASCII.GetBytes(sb.ToString());
                 return File(buffer, "text/json", CocType + DateTime.Today.ToString("yyyyMMdd") + ".json");
+            }
+            else
+            {
+                string fileName = CocType + DateTime.Today.ToString("yyyyMMdd") + ".xlsx";
+                using (XLWorkbook wb = new XLWorkbook())
+                {
+                    wb.Worksheets.Add(Cocs.ToDataTable());
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        wb.SaveAs(stream);
+                        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                    }
+                }
             }
         }
         // GET: Coc/Details/5
