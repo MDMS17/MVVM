@@ -29,6 +29,8 @@ namespace mcpdipData
         public string TradingPartnerCode { get; set; }
         public string ErrorMessage { get; set; }
         public string DataSource { get; set; }
+        public string CaseNumber { get; set; }
+        public string CaseStatus { get; set; }
     }
 
     public class McpdContinuityOfCare : HasAttributes, HasMcpdAttributes
@@ -59,6 +61,8 @@ namespace mcpdipData
         public string TradingPartnerCode { get; set; }
         public string ErrorMessage { get; set; }
         public string DataSource { get; set; }
+        public string CaseNumber { get; set; }
+        public string CaseStatus { get; set; }
     }
 
     public class McpdGrievance : HasAttributes, HasMcpdAttributes
@@ -78,6 +82,8 @@ namespace mcpdipData
         public string TradingPartnerCode { get; set; }
         public string ErrorMessage { get; set; }
         public string DataSource { get; set; }
+        public string CaseNumber { get; set; }
+        public string CaseStatus { get; set; }
     }
 
     public class McpdHeader
@@ -121,6 +127,8 @@ namespace mcpdipData
         public string TradingPartnerCode { get; set; }
         public string ErrorMessage { get; set; }
         public string DataSource { get; set; }
+        public string CaseNumber { get; set; }
+        public string CaseStatus { get; set; }
     }
 
     public class PcpAssignment : HasAttributes

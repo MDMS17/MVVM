@@ -37,6 +37,7 @@ namespace mcpdandpcpa.Controllers
             McpdHeader mcpdHeader = await _context.McpdHeaders.FirstOrDefaultAsync();
             if (string.IsNullOrEmpty(mcpdHeader.ReportingPeriod)) mcpdHeader.ReportingPeriod = DateTime.Today.AddMonths(-1).ToString("yyyyMMdd");
             await _context.SaveChangesAsync();
+            mcpdHeader.SubmissionDate = DateTime.Today;
             model.mcpdHeader = mcpdHeader;
             return View(model);
         }
@@ -84,32 +85,24 @@ namespace mcpdandpcpa.Controllers
                 McpdHeader headerHistory = await _contextHistory.McpdHeaders.FirstOrDefaultAsync(x => x.ReportingPeriod.Substring(0, 6) == model.mcpdHeader.ReportingPeriod.Substring(0, 6));
                 if (headerHistory != null)
                 {
-                    await _contextHistory.Database.ExecuteSqlCommandAsync($"delete from History.McpdGrievance where McpdHeaderId={headerHistory.McpdHeaderId.ToString()}");
-                    await _contextHistory.Database.ExecuteSqlCommandAsync($"delete from History.McpdAppeal where McpdHeaderId={headerHistory.McpdHeaderId.ToString()}");
-                    await _contextHistory.Database.ExecuteSqlCommandAsync($"delete from History.McpdContinuityOfCare where McpdHeaderId={headerHistory.McpdHeaderId.ToString()}");
-                    await _contextHistory.Database.ExecuteSqlCommandAsync($"delete from History.McpdOutOfNetwork where McpdHeaderId={headerHistory.McpdHeaderId.ToString()}");
+                    _contextHistory.Grievances.RemoveRange(_contextHistory.Grievances.Where(x => x.McpdHeaderId == headerHistory.McpdHeaderId));
+                    _contextHistory.Appeals.RemoveRange(_contextHistory.Appeals.Where(x => x.McpdHeaderId == headerHistory.McpdHeaderId));
+                    _contextHistory.McpdContinuityOfCare.RemoveRange(_contextHistory.McpdContinuityOfCare.Where(x => x.McpdHeaderId == headerHistory.McpdHeaderId));
+                    _contextHistory.McpdOutOfNetwork.RemoveRange(_contextHistory.McpdOutOfNetwork.Where(x => x.McpdHeaderId == headerHistory.McpdHeaderId));
+                    await _contextHistory.SaveChangesAsync();
                     _contextHistory.McpdHeaders.Remove(headerHistory);
                     await _contextHistory.SaveChangesAsync();
                 }
                 McpdHeader headerError = await _contextError.McpdHeaders.FirstOrDefaultAsync(x => x.ReportingPeriod.Substring(0, 6) == model.mcpdHeader.ReportingPeriod.Substring(0, 6));
                 if (headerError != null)
                 {
-                    await _contextError.Database.ExecuteSqlCommandAsync($"delete from Error.McpdGrievance where McpdHeaderId={headerHistory.McpdHeaderId.ToString()}");
-                    await _contextError.Database.ExecuteSqlCommandAsync($"delete from Error.McpdAppeal where McpdHeaderId={headerHistory.McpdHeaderId.ToString()}");
-                    await _contextError.Database.ExecuteSqlCommandAsync($"delete from Error.McpdContinuityOfCare where McpdHeaderId={headerHistory.McpdHeaderId.ToString()}");
-                    await _contextError.Database.ExecuteSqlCommandAsync($"delete from Error.McpdOutOfNetwork where McpdHeaderId={headerHistory.McpdHeaderId.ToString()}");
+                    await _contextError.Database.ExecuteSqlCommandAsync($"delete from Error.McpdGrievance where McpdHeaderId={headerError.McpdHeaderId.ToString()}");
+                    await _contextError.Database.ExecuteSqlCommandAsync($"delete from Error.McpdAppeal where McpdHeaderId={headerError.McpdHeaderId.ToString()}");
+                    await _contextError.Database.ExecuteSqlCommandAsync($"delete from Error.McpdContinuityOfCare where McpdHeaderId={headerError.McpdHeaderId.ToString()}");
+                    await _contextError.Database.ExecuteSqlCommandAsync($"delete from Error.McpdOutOfNetwork where McpdHeaderId={headerError.McpdHeaderId.ToString()}");
                     _contextError.McpdHeaders.Remove(headerError);
                     await _contextError.SaveChangesAsync();
                 }
-                headerHistory = new McpdHeader
-                {
-                    PlanParent = model.mcpdHeader.PlanParent,
-                    ReportingPeriod = model.mcpdHeader.ReportingPeriod,
-                    SubmissionDate = model.mcpdHeader.SubmissionDate,
-                    SchemaVersion = model.mcpdHeader.SchemaVersion
-                };
-                _contextHistory.McpdHeaders.Add(headerHistory);
-                await _contextHistory.SaveChangesAsync();
                 //check schema for grievances, add error to errorcontext, add valid to historycontext
                 List<McpdGrievance> allGrievances = await _context.Grievances.ToListAsync();
                 List<Tuple<string, bool, string>> grievanceSchemas = JsonOperations.ValidateGrievance(allGrievances);
@@ -135,7 +128,7 @@ namespace mcpdandpcpa.Controllers
                             hasError = true;
                         }
                         //BL_Grievance002
-                        if (grievance.GrievanceId.Substring(0, 3) != "305" && grievance.GrievanceId.Substring(0, 3) != "306")
+                        if (grievance.GrievanceId.Substring(0, 3) != grievance.PlanCode)
                         {
                             grievance.ErrorMessage += "Business Error: grievance id should start with plan code~";
                             hasError = true;
@@ -212,7 +205,7 @@ namespace mcpdandpcpa.Controllers
                             hasError = true;
                         }
                         //BL_Appeal002
-                        if (appeal.AppealId.Substring(0, 3) != "305" && appeal.AppealId.Substring(0, 3) != "306")
+                        if (appeal.AppealId.Substring(0, 3) != appeal.PlanCode)
                         {
                             appeal.ErrorMessage += "Business Error: Appeal id should start with plan code~";
                             hasError = true;
@@ -334,7 +327,7 @@ namespace mcpdandpcpa.Controllers
                             hasError = true;
                         }
                         //BL_Coc002
-                        if (coc.CocId.Substring(0, 3) != "305" && coc.CocId.Substring(0, 3) != "306")
+                        if (coc.CocId.Substring(0, 3) != coc.PlanCode)
                         {
                             coc.ErrorMessage += "Business Error: COC id should start with plan code~";
                             hasError = true;
@@ -538,7 +531,7 @@ namespace mcpdandpcpa.Controllers
                             hasError = true;
                         }
                         //BL_Oon002
-                        if (oon.OonId.Substring(0, 3) != "305" && oon.OonId.Substring(0, 3) != "306")
+                        if (oon.OonId.Substring(0, 3) != oon.PlanCode)
                         {
                             oon.ErrorMessage += "Business Error: Oon id should start with plan code~";
                             hasError = true;
@@ -611,6 +604,18 @@ namespace mcpdandpcpa.Controllers
                             oon.ErrorMessage += "Business Error: OON Request Resolved Date must be >= OON Request Received Date~";
                             hasError = true;
                         }
+                        //BL_OON010
+                        if (oon.ServiceLocationCountry != "US" && !string.IsNullOrEmpty(oon.ServiceLocationState))
+                        {
+                            oon.ErrorMessage += "Business ERror: Foreign country, state should be blank~";
+                            hasError = true;
+                        }
+                        //BL_OON011
+                        if (oon.ServiceLocationCountry != "US" && !string.IsNullOrEmpty(oon.ServiceLocationZip))
+                        {
+                            oon.ErrorMessage += "Business Error: Foreigh country, zip should be blank~";
+                            hasError = true;
+                        }
                     }
                     if (hasError)
                     {
@@ -644,7 +649,10 @@ namespace mcpdandpcpa.Controllers
                     GrievanceType = x.GrievanceType,
                     BenefitType = x.BenefitType,
                     ExemptIndicator = x.ExemptIndicator,
-                    TradingPartnerCode = x.TradingPartnerCode
+                    TradingPartnerCode = x.TradingPartnerCode,
+                    DataSource = x.DataSource,
+                    CaseNumber = x.CaseNumber,
+                    CaseStatus = x.CaseStatus
                 }));
                 _contextHistory.Appeals.AddRange(validAppeals.Select(x => new McpdAppeal
                 {
@@ -663,7 +671,10 @@ namespace mcpdandpcpa.Controllers
                     AppealResolutionDate = x.AppealResolutionDate,
                     PartiallyOverturnIndicator = x.PartiallyOverturnIndicator,
                     ExpeditedIndicator = x.ExpeditedIndicator,
-                    TradingPartnerCode = x.TradingPartnerCode
+                    TradingPartnerCode = x.TradingPartnerCode,
+                    DataSource = x.DataSource,
+                    CaseNumber = x.CaseNumber,
+                    CaseStatus = x.CaseStatus
                 }));
                 _contextHistory.McpdContinuityOfCare.AddRange(validCocs.Select(x => new McpdContinuityOfCare
                 {
@@ -689,6 +700,9 @@ namespace mcpdandpcpa.Controllers
                     MerCocDispositionDate = x.MerCocDispositionDate,
                     ReasonMerCocNotMetIndicator = x.ReasonMerCocNotMetIndicator,
                     TradingPartnerCode = x.TradingPartnerCode,
+                    DataSource = x.DataSource,
+                    CaseNumber = x.CaseNumber,
+                    CaseStatus = x.CaseStatus
                 }));
                 _contextHistory.McpdOutOfNetwork.AddRange(validOons.Select(x => new McpdOutOfNetwork
                 {
@@ -711,7 +725,10 @@ namespace mcpdandpcpa.Controllers
                     ServiceLocationState = x.ServiceLocationState,
                     ServiceLocationZip = x.ServiceLocationZip,
                     ServiceLocationCountry = x.ServiceLocationCountry,
-                    TradingPartnerCode = x.TradingPartnerCode
+                    TradingPartnerCode = x.TradingPartnerCode,
+                    DataSource = x.DataSource,
+                    CaseNumber = x.CaseNumber,
+                    CaseStatus = x.CaseStatus
                 }));
                 await _contextHistory.SaveChangesAsync();
                 if (errorGrievances.Count() > 0 || errorAppeals.Count() > 0 || errorCocs.Count() > 0 || errorOons.Count() > 0)
@@ -739,7 +756,11 @@ namespace mcpdandpcpa.Controllers
                             GrievanceType = x.GrievanceType,
                             BenefitType = x.BenefitType,
                             ExemptIndicator = x.ExemptIndicator,
-                            TradingPartnerCode = x.TradingPartnerCode
+                            TradingPartnerCode = x.TradingPartnerCode,
+                            ErrorMessage = x.ErrorMessage,
+                            DataSource = x.DataSource,
+                            CaseNumber = x.CaseNumber,
+                            CaseStatus = x.CaseStatus
                         }));
                     }
                     if (errorAppeals.Count() > 0)
@@ -761,7 +782,11 @@ namespace mcpdandpcpa.Controllers
                             AppealResolutionDate = x.AppealResolutionDate,
                             PartiallyOverturnIndicator = x.PartiallyOverturnIndicator,
                             ExpeditedIndicator = x.ExpeditedIndicator,
-                            TradingPartnerCode = x.TradingPartnerCode
+                            TradingPartnerCode = x.TradingPartnerCode,
+                            ErrorMessage = x.ErrorMessage,
+                            DataSource = x.DataSource,
+                            CaseNumber = x.CaseNumber,
+                            CaseStatus = x.CaseStatus
                         }));
                     }
                     if (errorCocs.Count() > 0)
@@ -790,7 +815,10 @@ namespace mcpdandpcpa.Controllers
                             MerCocDispositionDate = x.MerCocDispositionDate,
                             ReasonMerCocNotMetIndicator = x.ReasonMerCocNotMetIndicator,
                             TradingPartnerCode = x.TradingPartnerCode,
-                            ErrorMessage = x.ErrorMessage
+                            ErrorMessage = x.ErrorMessage,
+                            DataSource = x.DataSource,
+                            CaseNumber = x.CaseNumber,
+                            CaseStatus = x.CaseStatus
                         }));
                     }
                     if (errorOons.Count() > 0)
@@ -817,7 +845,10 @@ namespace mcpdandpcpa.Controllers
                             ServiceLocationZip = x.ServiceLocationZip,
                             ServiceLocationCountry = x.ServiceLocationCountry,
                             TradingPartnerCode = x.TradingPartnerCode,
-                            ErrorMessage = x.ErrorMessage
+                            ErrorMessage = x.ErrorMessage,
+                            DataSource = x.DataSource,
+                            CaseNumber = x.CaseNumber,
+                            CaseStatus = x.CaseStatus
                         }));
                     }
                     await _contextError.SaveChangesAsync();
@@ -902,7 +933,7 @@ namespace mcpdandpcpa.Controllers
                     serviceLocationZip = x.ServiceLocationZip,
                     serviceLocationCountry = x.ServiceLocationCountry
                 }).ToList();
-                string fileName = "Mcpd_" + model.mcpdHeader.ReportingPeriod.Substring(0, 6) + ".json";
+                string fileName = "IEHP_MCPD_" + model.mcpdHeader.SubmissionDate.ToString("yyyyMMdd") + "_" + model.FileVersion + ".json";
                 System.IO.File.WriteAllText(Path.Combine(model.JsonExportPath, fileName), JsonOperations.GetMcpdJson(jsonMcpd));
                 model.mcpdJsonMessage = $"Json file {fileName} generation in {model.JsonExportPath} completed";
                 SubmissionLog log2 = await _contextLog.SubmissionLogs.FirstOrDefaultAsync(x => x.RecordYear == model.mcpdHeader.ReportingPeriod.Substring(0, 4) && x.RecordMonth == model.mcpdHeader.ReportingPeriod.Substring(4, 2) && x.FileType == "MCPD");
@@ -936,7 +967,7 @@ namespace mcpdandpcpa.Controllers
                     ProcessLog log = await _contextLog.ProcessLogs.FirstOrDefaultAsync(x => x.TradingPartnerCode == IPA && x.RecordYear == model.mcpdHeader.ReportingPeriod.Substring(0, 4) && x.RecordMonth == model.mcpdHeader.ReportingPeriod.Substring(4, 2));
                     int countValidGrievance = validGrievances.Count(x => x.TradingPartnerCode == IPA);
                     int countErrorGrievance = errorGrievances.Count(x => x.TradingPartnerCode == IPA);
-                    int countValidAppeal = validGrievances.Count(x => x.TradingPartnerCode == IPA);
+                    int countValidAppeal = validAppeals.Count(x => x.TradingPartnerCode == IPA);
                     int countErrorAppeal = errorAppeals.Count(x => x.TradingPartnerCode == IPA);
                     int countValidCOC = validCocs.Count(x => x.TradingPartnerCode == IPA);
                     int countErrorCOC = errorCocs.Count(x => x.TradingPartnerCode == IPA);
@@ -967,7 +998,7 @@ namespace mcpdandpcpa.Controllers
                     submissionDate = model.mcpdHeader.SubmissionDate.ToString("yyyyMMdd"),
                     schemaVersion = model.mcpdHeader.SchemaVersion
                 };
-                jsonMcpd.grievances = _context.Grievances.Where(x => x.RecordType == "Original").Select(x => new JsonGrievance
+                jsonMcpd.grievances = _context.Grievances.Select(x => new JsonGrievance
                 {
                     planCode = x.PlanCode,
                     cin = x.Cin,
@@ -979,7 +1010,7 @@ namespace mcpdandpcpa.Controllers
                     benefitType = x.BenefitType,
                     exemptIndicator = x.ExemptIndicator
                 }).ToList();
-                jsonMcpd.appeals = _context.Appeals.Where(x => x.RecordType == "Original").Select(x => new JsonAppeal
+                jsonMcpd.appeals = _context.Appeals.Select(x => new JsonAppeal
                 {
                     planCode = x.PlanCode,
                     cin = x.Cin,
@@ -996,7 +1027,7 @@ namespace mcpdandpcpa.Controllers
                     partiallyOverturnIndicator = x.PartiallyOverturnIndicator,
                     expeditedIndicator = x.ExpeditedIndicator
                 }).ToList();
-                jsonMcpd.continuityOfCare = _context.McpdContinuityOfCare.Where(x => x.RecordType == "Original").Select(x => new JsonCOC
+                jsonMcpd.continuityOfCare = _context.McpdContinuityOfCare.Select(x => new JsonCOC
                 {
                     planCode = x.PlanCode,
                     cin = x.Cin,
@@ -1019,7 +1050,7 @@ namespace mcpdandpcpa.Controllers
                     merCocDispositionDate = x.MerCocDispositionDate,
                     reasonMerCocNotMetIndicator = x.ReasonMerCocNotMetIndicator
                 }).ToList();
-                jsonMcpd.outOfNetwork = _context.McpdOutOfNetwork.Where(x => x.RecordType == "Original").Select(x => new JsonOON
+                jsonMcpd.outOfNetwork = _context.McpdOutOfNetwork.Select(x => new JsonOON
                 {
                     planCode = x.PlanCode,
                     cin = x.Cin,
@@ -1080,14 +1111,14 @@ namespace mcpdandpcpa.Controllers
                     if (item.planCode == "305")
                     {
                         item.cin = GlobalViewModel.TestCin305[i305];
-                        item.merExemptionId = GlobalViewModel.TestCocMer305[i305];
+                        if (item.cocType == "MER Denial") item.merExemptionId = GlobalViewModel.TestCocMer305[i305];
                         i305++;
                         if (i305 >= 10) i305 = 0;
                     }
                     else if (item.planCode == "306")
                     {
                         item.cin = GlobalViewModel.TestCin306[i306];
-                        item.merExemptionId = GlobalViewModel.TestCocMer306[i306];
+                        if (item.cocType == "MER Denial") item.merExemptionId = GlobalViewModel.TestCocMer306[i306];
                         i306++;
                         if (i306 >= 10) i306 = 0;
                     }
@@ -1109,7 +1140,7 @@ namespace mcpdandpcpa.Controllers
                         if (i306 >= 10) i306 = 0;
                     }
                 }
-                string fileName = "IEHP_MCPD_" + model.mcpdHeader.SubmissionDate.ToString("yyyyMMdd") + "_00001.json";
+                string fileName = "IEHP_MCPD_" + model.mcpdHeader.SubmissionDate.ToString("yyyyMMdd") + "_" + model.FileVersion + ".json";
                 System.IO.File.WriteAllText(Path.Combine(model.JsonExportPath, fileName), JsonOperations.GetMcpdJson(jsonMcpd));
                 model.mcpdJsonMessage = $"Test Json file {fileName} generation in {model.JsonExportPath} completed";
             }
@@ -1188,11 +1219,13 @@ namespace mcpdandpcpa.Controllers
                 List<PcpAssignment> validPcpas = new List<PcpAssignment>();
                 List<PcpAssignment> errorPcpas = new List<PcpAssignment>();
                 int totalPages = _context.PcpAssignments.Count() / 100000;
+                string cinPattern = "^[0-9]{8}[A-Z]$";
+                string npiPattern = "^[0-9]{10}$";
                 for (int i = 0; i <= totalPages; i++)
                 {
                     List<PcpAssignment> currentPcpas = await _context.PcpAssignments.Skip(i * 100000).Take(100000).ToListAsync();
                     if (currentPcpas.Count() == 0) break;
-                    List<Tuple<string, string, bool, string>> pcpaSchemas = JsonOperations.ValidatePcpa(currentPcpas);
+                    //List<Tuple<string, string, bool, string>> pcpaSchemas = JsonOperations.ValidatePcpa(currentPcpas);
                     foreach (PcpAssignment pcpa in currentPcpas)
                     {
                         if (dupCins.Contains(pcpa.Cin))
@@ -1200,14 +1233,24 @@ namespace mcpdandpcpa.Controllers
                             pcpa.ErrorMessage = "Business Error: Duplicated Cin";
                             errorPcpas.Add(pcpa);
                         }
-                        else if (pcpaSchemas.First(x => x.Item1 == pcpa.Cin && x.Item2 == pcpa.Npi).Item3)
+                        else if (pcpa.PlanCode != "305" && pcpa.PlanCode != "306")
                         {
-                            validPcpas.Add(pcpa);
+                            pcpa.ErrorMessage = "Business Error: Invalid PlanCode";
+                            errorPcpas.Add(pcpa);
+                        }
+                        else if (!System.Text.RegularExpressions.Regex.Match(pcpa.Cin, cinPattern).Success)
+                        {
+                            pcpa.ErrorMessage = "Schema Error: Invalid CIN";
+                            errorPcpas.Add(pcpa);
+                        }
+                        else if (!System.Text.RegularExpressions.Regex.Match(pcpa.Npi, npiPattern).Success)
+                        {
+                            pcpa.ErrorMessage = "Schema Error: Invalid NPI";
+                            errorPcpas.Add(pcpa);
                         }
                         else
                         {
-                            pcpa.ErrorMessage = "Schema Error: " + pcpaSchemas.First(x => x.Item1 == pcpa.Cin && x.Item2 == pcpa.Npi).Item4;
-                            errorPcpas.Add(pcpa);
+                            validPcpas.Add(pcpa);
                         }
                     }
                 }
@@ -1222,9 +1265,9 @@ namespace mcpdandpcpa.Controllers
                 };
                 _contextHistory.PcpHeaders.Add(headerHistory);
                 await _contextHistory.SaveChangesAsync();
-                for (int j = 0; j <= validPcpas.Count() / 1000; j++)
+                for (int j = 0; j <= validPcpas.Count() / 100000; j++)
                 {
-                    _contextHistory.PcpAssignments.AddRange(validPcpas.Skip(j * 1000).Take(1000).Select(x => new PcpAssignment
+                    _contextHistory.PcpAssignments.AddRange(validPcpas.Skip(j * 100000).Take(100000).Select(x => new PcpAssignment
                     {
                         PcpHeaderId = headerHistory.PcpHeaderId,
                         PlanCode = x.PlanCode,
@@ -1275,7 +1318,7 @@ namespace mcpdandpcpa.Controllers
                     cin = x.Cin,
                     npi = x.Npi
                 }).ToList();
-                string fileName = "IEHP_PCPA_" + model.PcpaHeader.SubmissionDate + "_00001.json";
+                string fileName = "IEHP_PCPA_" + model.PcpaHeader.SubmissionDate + "_" + model.FileVersion + ".json";
                 System.IO.File.WriteAllText(Path.Combine(model.JsonExportPath, fileName), JsonOperations.GetPcpaJson(jsonPcpa));
                 model.PcpaMessage = $"Json file {fileName} generation in {model.JsonExportPath} completed";
                 SubmissionLog log2 = await _contextLog.SubmissionLogs.FirstOrDefaultAsync(x => x.RecordYear == model.PcpaHeader.ReportingPeriod.Substring(0, 4) && x.RecordMonth == model.PcpaHeader.ReportingPeriod.Substring(4, 2) && x.FileType == "PCPA");
@@ -1347,7 +1390,7 @@ namespace mcpdandpcpa.Controllers
                         if (i306 >= 10) i306 = 0;
                     }
                 }
-                string fileName = "IEHP_PCPA_" + model.PcpaHeader.SubmissionDate + "_00001.json";
+                string fileName = "IEHP_PCPA_" + model.PcpaHeader.SubmissionDate + "_" + model.FileVersion + ".json";
                 System.IO.File.WriteAllText(Path.Combine(model.JsonExportPath, fileName), JsonOperations.GetPcpaJson(jsonPcpa));
                 model.PcpaMessage = $"Test Json file {fileName} generation in {model.JsonExportPath} completed";
             }
@@ -1471,7 +1514,7 @@ namespace mcpdandpcpa.Controllers
             return View(model);
         }
         [HttpPost]
-        public IActionResult McpdJson(int? id, McpdViewModel model)
+        public IActionResult McpdJsonTest(int? id, McpdViewModel model)
         {
             //this is for test only
             return View(model);

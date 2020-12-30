@@ -16,6 +16,7 @@ namespace mcpdandpcpa.Models
         public McpdHeader mcpdHeader { get; set; }
         public string JsonExportPath { get; set; }
         public string mcpdJsonMessage { get; set; }
+        public string FileVersion { get; set; } = "00001";
     }
 }
 

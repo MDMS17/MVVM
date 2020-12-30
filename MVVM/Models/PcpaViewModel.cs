@@ -77,6 +77,7 @@ namespace mcpdandpcpa.Models
         public string DataSourceError { get; set; }
         public List<SelectListItem> JsonFileMode { get; set; } = GlobalViewModel.JsonFileMode.Select(x=>new SelectListItem { Text=x,Value=x}).ToList();
         public string SelectedJsonFileMode { get; set; }
+        public string FileVersion { get; set; } = "00001";
     }
 }
 
